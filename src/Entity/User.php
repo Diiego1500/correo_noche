@@ -93,9 +93,25 @@ class User implements UserInterface
      */
     private $city;
 
-    public function __construct()
+
+
+
+    public function __construct($name = null, $lastName = null, $email = null, $address = null, $neighborhood = null, $phone = null, $birthdate = null, $age = null, $photo = null, $city = null)
     {
+        $this->name = $name;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->address = $address;
+        $this->neighborhood = $neighborhood;
+        $this->phone = $phone;
+        $this->birthdate = $birthdate;
+        $this->age = $age;
+        $this->photo = $photo;
+        $this->city = $city;
+        $this->hash = $this->generateRandomString();
+        $this->roles = ['ROLE_USER'];
         $this->orders = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -369,6 +385,14 @@ class User implements UserInterface
 
 
 
-
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 
 }
