@@ -3,6 +3,7 @@
 {% block title %}New Category{% endblock %}
 
 {% block body %}
+    {{ parent() }}
     <h1>Create new Category</h1>
 
     {{ include('category/_form.html.twig') }}

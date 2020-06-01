@@ -3,6 +3,7 @@
 {% block title %}New City{% endblock %}
 
 {% block body %}
+    {{ parent() }}
     <h1>Create new City</h1>
 
     {{ include('city/_form.html.twig') }}
