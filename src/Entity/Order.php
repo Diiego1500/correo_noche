@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
+
+    const STATUS = ['Finalizado', 'En Proceso'];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -21,27 +24,27 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $realizationDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $discount;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $totalValue;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $paymentMethod;
 
@@ -56,8 +59,10 @@ class Order
      */
     private $productOrders;
 
-    public function __construct()
+    public function __construct($user)
     {
+        $this->user = $user;
+        $this->status = self::STATUS[1];
         $this->productOrders = new ArrayCollection();
     }
 

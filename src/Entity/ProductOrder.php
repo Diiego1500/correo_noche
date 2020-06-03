@@ -34,6 +34,20 @@ class ProductOrder
      */
     private $orderr;
 
+    /**
+     * ProductOrder constructor.
+     * @param $cantidad
+     * @param $product
+     * @param $orderr
+     */
+    public function __construct($cantidad, $product, $orderr)
+    {
+        $this->cantidad = $cantidad;
+        $this->product = $product;
+        $this->orderr = $orderr;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

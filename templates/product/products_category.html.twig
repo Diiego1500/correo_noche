@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-{% block title %}Category index{% endblock %}
+{% block title %}Products index{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
     {{ parent() }}
     <div class="container">
@@ -12,9 +15,13 @@
                                 <img src="{{ asset('uploads/product/'~product.photo) }}" alt="{{ product.name }}"
                                      width="100%">
                                 <hr>
-                                <h4>{{ product.name }}</h4>
+                                <h5>{{ product.name }}</h5>
                                 <small>precio: ${{ product.price }}</small>
-                                <p>{{ product.description }}</p>
+                                <hr>
+                                <button class="btn btn-success btn-block add_car" data-id="{{ product.id }}"
+                                        data-hash="{{ app.user.hash }}">
+                                    Agregar al carrito
+                                </button>
                                 <div>
                                     <a href="{{ path('product_show',{id:product.id}) }}">Ver</a>
                                     <a href="{{ path('product_edit',{id:product.id}) }}">Editar</a>
@@ -29,19 +36,23 @@
             <div class="col-md-4">
                 <div class="border my-2">
                     <div class="p-2" style="background-color: #b3b7bb; color: white">
-                        <strong>Carrito de compras</strong> - Confirmar Pedido</div>
-                    <div class="p-2">
-                        <div class="p-1 my-2 rounded border">
-                            <h6>Aguardiente Blanco Del Valle</h6>
-                            <div><small>Precio Unidad: $1500</small></div>
-                            <div class="row">
-                                <div class="col-md-6"><small>Cantidad: 2</small></div>
-                                <div class="col-md-6 text-right">
-                                    <small><strong>Total: $3.000</strong></small>
+                        <strong>Carrito de compras</strong> - Confirmar Pedido
+                    </div>
+                    {% for productorder in order.productOrders %}
+                        {% set product = productorder.product %}
+                        <div class="p-2">
+                            <div class="p-1 rounded border">
+                                <h6>{{ product.name }}</h6>
+                                <div><small>Precio Unidad: ${{ product.price }}</small></div>
+                                <div class="row">
+                                    <div class="col-md-6"><small>Cantidad: {{ productorder.cantidad }}</small></div>
+                                    <div class="col-md-6 text-right">
+                                        <small><strong>SubTotal: {{ product.price * productorder.cantidad }}</strong></small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="border p-5 my-4 text-center">
                     LOGO AQUÍ
@@ -49,4 +60,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('assets/js/shopping_car.js') }}"></script>
 {% endblock %}

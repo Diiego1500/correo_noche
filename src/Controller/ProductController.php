@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -127,7 +128,11 @@ class ProductController extends AbstractController
      * @Route("/category/{id}", name="products_category")
      */
     public function productsCategory(Category $category){
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $order = $em->getRepository(Order::class)->FindUserOrder($user->getId());
         $products = $category->getProducts();
-        return $this->render('product/products_category.html.twig', ['products'=>$products]);
+        return $this->render('product/products_category.html.twig', ['products'=>$products, 'order'=>$order]);
     }
 }

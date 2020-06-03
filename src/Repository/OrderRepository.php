@@ -19,32 +19,16 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    // /**
-    //  * @return Order[] Returns an array of Order objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function FindUserOrder($user_id){
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT orderr
+                FROM App:Order orderr
+                LEFT JOIN orderr.productOrders productOrder
+                WHERE orderr.user =:user_id AND orderr.status =:status
+            ')
+            ->setParameter('user_id', $user_id)
+            ->setParameter('status', Order::STATUS[1])
+            ->getSingleResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Order
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
