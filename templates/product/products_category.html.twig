@@ -22,10 +22,10 @@
                                         data-hash="{{ app.user.hash }}">
                                     Agregar al carrito
                                 </button>
-                                <div>
-                                    <a href="{{ path('product_show',{id:product.id}) }}">Ver</a>
-                                    <a href="{{ path('product_edit',{id:product.id}) }}">Editar</a>
-                                </div>
+                                {#                                <div>#}
+                                {#                                    <a href="{{ path('product_show',{id:product.id}) }}">Ver</a>#}
+                                {#                                    <a href="{{ path('product_edit',{id:product.id}) }}">Editar</a>#}
+                                {#                                </div>#}
                             </div>
                         </div>
                     {% else %}
@@ -38,21 +38,30 @@
                     <div class="p-2" style="background-color: #b3b7bb; color: white">
                         <strong>Carrito de compras</strong> - Confirmar Pedido
                     </div>
-                    {% for productorder in order.productOrders %}
-                        {% set product = productorder.product %}
-                        <div class="p-2">
-                            <div class="p-1 rounded border">
-                                <h6>{{ product.name }}</h6>
-                                <div><small>Precio Unidad: ${{ product.price }}</small></div>
-                                <div class="row">
-                                    <div class="col-md-6"><small>Cantidad: {{ productorder.cantidad }}</small></div>
-                                    <div class="col-md-6 text-right">
-                                        <small><strong>SubTotal: {{ product.price * productorder.cantidad }}</strong></small>
+                    <div id="shopping_car" style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
+                        {% if order is not null %}
+                            {% for productorder in order.productOrders %}
+                                {% set product = productorder.product %}
+                                <div class="p-2">
+                                    <div class="p-1 rounded border">
+                                        <h6>{{ product.name }}</h6>
+                                        <div><small>Precio Unidad: ${{ product.price }}</small></div>
+                                        <div class="row">
+                                            <div class="col-md-6"><small>Cantidad: {{ productorder.cantidad }}</small>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <small><strong>SubTotal: {{ product.price * productorder.cantidad }}</strong></small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="p-2">
+                                <div class="alert alert-danger ">No ha agregado productos al carrito</div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="border p-5 my-4 text-center">
                     LOGO AQUÍ

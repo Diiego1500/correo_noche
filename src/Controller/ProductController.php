@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,10 +129,14 @@ class ProductController extends AbstractController
      * @Route("/category/{id}", name="products_category")
      */
     public function productsCategory(Category $category){
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-
-        $order = $em->getRepository(Order::class)->FindUserOrder($user->getId());
+        try{
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $order = $em->getRepository(Order::class)->FindUserOrder($user->getId());
+        }
+        catch (NoResultException $ex){
+            $order = null;
+        }
         $products = $category->getProducts();
         return $this->render('product/products_category.html.twig', ['products'=>$products, 'order'=>$order]);
     }
