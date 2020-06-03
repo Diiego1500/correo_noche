@@ -4,42 +4,28 @@
 
 {% block body %}
     {{ parent() }}
-
-    <h1>Product index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.photo }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.discount }}</td>
-                <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('product_new') }}">Create new</a>
+    <div class="container">
+        <a href="{{ path('product_new') }}">Create new</a>
+        <div class="container">
+            <div class="row d-flex justify-content-center my-4">
+                {% for product in products %}
+                    <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white">
+                        <div class="p-2 bd-highlight border">
+                            <img src="{{ asset('uploads/product/'~product.photo) }}" alt="{{ product.name }}" width="100%">
+                            <hr>
+                            <h4>{{ product.name }}</h4>
+                            <small>precio: ${{ product.price }}</small>
+                            <p>{{ product.description }}</p>
+                            <div>
+                                <a href="{{ path('product_show',{id:product.id}) }}">Ver</a>
+                                <a href="{{ path('product_edit',{id:product.id}) }}">Editar</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">No hay categorías registradas</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

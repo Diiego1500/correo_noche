@@ -2,11 +2,9 @@
 {% block title %}Category index{% endblock %}
 {% block body %}
     {{ parent() }}
-<div class="container">
-
+    <div class="container">
         <div class="row d-flex justify-content-center my-4">
             {% for product in products %}
-{#                {{ dump(product) }}#}
                 <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white">
                     <div class="p-2 bd-highlight border">
                         <img src="{{ asset('uploads/product/'~product.photo) }}" alt="{{ product.name }}" width="100%">
@@ -24,6 +22,5 @@
                 <div class="alert alert-warning">No hay categorías registradas</div>
             {% endfor %}
         </div>
-
-</div>
+    </div>
 {% endblock %}
