@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Product index{% endblock %}
-
 {% block body %}
     {{ parent() }}
     <div class="container">
@@ -9,7 +7,7 @@
         <div class="container">
             <div class="row d-flex justify-content-center my-4">
                 {% for product in products %}
-                    <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white">
+                    <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white category">
                         <div class="p-2 bd-highlight border">
                             <img src="{{ asset('uploads/product/'~product.photo) }}" alt="{{ product.name }}" width="100%">
                             <hr>

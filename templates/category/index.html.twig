@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
-{% block title %}Category index{% endblock %}
+{% block title %}¿Qué deseas Comprar?{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/category.css') }}">
+{% endblock %}
 {% block body %}
     {{ parent() }}
     <div class="container">
@@ -7,7 +11,7 @@
         <a href="{{ path('category_new') }}">Nueva Categoría</a>
         <div class="row d-flex justify-content-center my-4">
             {% for category in categories %}
-                <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white" onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
+                <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white category" onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
                     <div class="p-2 bd-highlight border">
                         <img src="{{ asset('uploads/category/'~category.photo) }}" alt="{{ category.name }}" width="100%">
                         <hr>
