@@ -7,25 +7,53 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
-        <h1>Categorías</h1>
-        <a href="{{ path('category_new') }}">Nueva Categoría</a>
+        {#        <h1>Categorías</h1>#}
+        {#        <a href="{{ path('category_new') }}">Nueva Categoría</a>#}
         <div class="row d-flex justify-content-center my-4">
-            {% for category in categories %}
-                <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white category" onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
-                    <div class="p-2 bd-highlight border">
-                        <img src="{{ asset('uploads/category/'~category.photo) }}" alt="{{ category.name }}" width="100%">
-                        <hr>
-                        <h4>{{ category.name }}</h4>
-                        <p>{{ category.description }}</p>
-                        <div>
-                            <a href="{{ path('category_show',{id:category.id}) }}">Ver</a>
-                            <a href="{{ path('category_edit',{id:category.id}) }}">Editar</a>
+            <div class="col-md-8">
+                <div class="row">
+                    {% for category in categories %}
+                        <div class="col-md-6 d-flex bd-highlight my-1 rounded-sm bg-white category"
+                             onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
+                            <div class="p-2 bd-highlight border">
+                                <img src="{{ asset('uploads/category/'~category.photo) }}" alt="{{ category.name }}"
+                                     width="100%">
+                                <hr>
+                                <h4 class="text-center">{{ category.name }}</h4>
+                                {#                                <p>{{ category.description }}</p>#}
+                                <div>
+                                    <a href="{{ path('category_show',{id:category.id}) }}">Ver</a>
+                                    <a href="{{ path('category_edit',{id:category.id}) }}">Editar</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning">No hay categorías registradas</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border my-2">
+                    <div class="p-2" style="background-color: #b3b7bb; color: white">
+                        <strong>Carrito de compras</strong> - Confirmar Pedido</div>
+                    <div class="p-2">
+                        <div class="p-1 my-2 rounded border">
+                            <h6>Aguardiente Blanco Del Valle</h6>
+                            <div><small>Precio Unidad: $1500</small></div>
+                            <div class="row">
+                                <div class="col-md-6"><small>Cantidad: 2</small></div>
+                                <div class="col-md-6 text-right">
+                                    <small><strong>Total: $3.000</strong></small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% else %}
-                <div class="alert alert-warning">No hay categorías registradas</div>
-            {% endfor %}
+                <div class="border p-5 my-4 text-center">
+                    LOGO AQUÍ
+                </div>
+            </div>
         </div>
+    </div>
     </div>
 {% endblock %}
