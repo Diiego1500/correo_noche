@@ -15,7 +15,8 @@ class CategoryType extends AbstractType
         $builder
             ->add('photo', FileType::class, [
                 'label'=>'Seleccione una foto para la categoría',
-                'mapped' => false
+                'mapped' => false,
+                'required'=>false
             ])
             ->add('name')
             ->add('description')

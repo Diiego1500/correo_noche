@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
@@ -35,7 +36,6 @@ class ProductController extends AbstractController
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if($photo){
@@ -57,10 +57,8 @@ class ProductController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($product);
             $entityManager->flush();
-
             return $this->redirectToRoute('product_index');
         }
-
         return $this->render('product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
@@ -84,7 +82,6 @@ class ProductController extends AbstractController
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $photo = $form->get('photo')->getData();
             if($photo){
@@ -103,12 +100,9 @@ class ProductController extends AbstractController
                 }
                 $product->setPhoto($newFilename);
             }
-
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('product_index');
         }
-
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
@@ -127,5 +121,13 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('product_index');
+    }
+
+    /**
+     * @Route("/category/{id}", name="products_category")
+     */
+    public function productsCategory(Category $category){
+        $products = $category->getProducts();
+        return $this->render('product/products_category.html.twig', ['products'=>$products]);
     }
 }

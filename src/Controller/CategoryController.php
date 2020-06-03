@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+
 /**
  * @Route("/category")
  */
@@ -80,14 +81,31 @@ class CategoryController extends AbstractController
     /**
      * @Route("/{id}/edit", name="category_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Category $category): Response
+    public function edit(Request $request, Category $category, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $photo = $form->get('photo')->getData();
+            if($photo){
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photo->guessExtension();
+                // Move the file to the directory where brochures are stored
+                try{
+                    $photo->move(
+                        $this->getParameter('category_directory'),
+                        $newFilename
+                    );
+                }catch (FileException $e){
+                    throw new \Exception('Ups, there was an Error');
+                }
+                $category->setPhoto($newFilename);
+            }
 
+            $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('category_index');
         }
 
