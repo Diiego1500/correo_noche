@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Order;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,8 +25,17 @@ class CategoryController extends AbstractController
      */
     public function index(CategoryRepository $categoryRepository): Response
     {
+        try{
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $order = $em->getRepository(Order::class)->FindUserOrder($user->getId());
+        }
+        catch (NoResultException $ex){
+            $order = null;
+        }
         return $this->render('category/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
+            'order'=>$order
         ]);
     }
 
