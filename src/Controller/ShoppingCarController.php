@@ -33,6 +33,7 @@ class ShoppingCarController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $product_id = $request->request->get('product_id');
             $user_hash = $request->request->get('hash');
+            $ammount = $request->request->get('ammount');
 
             $user = $em->getRepository(User::class)->findOneBy(['hash' => $user_hash]);
             $order = $em->getRepository(Order::class)->findOneBy(['user' => $user, 'status' => Order::STATUS[1]]);
@@ -43,7 +44,7 @@ class ShoppingCarController extends AbstractController
                 $em->persist($order);
             }
 
-            $product_order = new ProductOrder(2, $product, $order);
+            $product_order = new ProductOrder($ammount, $product, $order);
             $order->addProductOrder($product_order);
             $em->persist($product_order);
             $em->flush();
