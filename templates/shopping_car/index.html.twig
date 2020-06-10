@@ -1,20 +1,48 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Hello ShoppingCarController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/CorreoDeLaNoche/src/Controller/ShoppingCarController.php'|file_link(0) }}">src/Controller/ShoppingCarController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/CorreoDeLaNoche/templates/shopping_car/index.html.twig'|file_link(0) }}">templates/shopping_car/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {{ parent() }}
+    {% set total_factura = 0 %}
+    <div class="container">
+        <div class="row my-2">
+            <div class="col-md-8">
+                <h5 class="my-2">Mi orden</h5>
+                <div class="row" style="height: 500px; overflow-y: scroll; overflow-x: hidden;">
+                    {% for order in order.productOrders %}
+                        {% set product = order.product %}
+                        {% set subtotal = (order.cantidad * product.price) %}
+                        <div class="col-md-3 p-3 my-2 border">
+                            <img class="rounded" src="{{ asset('uploads/product/'~product.photo) }}"
+                                 alt="{{ product.name }}" width="100%">
+                        </div>
+                        <div class="col-md-9 p-3 my-2 border">
+                            <h5>{{ product.name }}</h5>
+                            <div>Precio Unidad: ${{ product.price }}</div>
+                            <div>Cantidad: {{ order.cantidad }}</div>
+                            <div>Subtotal: ${{ subtotal }}</div>
+                            <div><a href="{{ path('delete_product',{id: order.id}) }}">Sacar del Carrito</a></div>
+                            <div>
+                                <input type="number" id="ammount_{{ order.id }}">
+                                <button class="change_ammount" data-id="{{ order.id }}">Cambiar Cantidad</button>
+                            </div>
+                        </div>
+                        {% set total_factura = total_factura + subtotal %}
+                    {% else %}
+                        <div class="col-md-12 alert alert-warning">
+                            <h6 class="text-center">El carrtito de compras está vacío</h6>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{ dump(total_factura) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('assets/js/sales.js') }}"></script>
 {% endblock %}

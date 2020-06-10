@@ -18,8 +18,11 @@ class ShoppingCarController extends AbstractController
      */
     public function index()
     {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $order = $em->getRepository(Order::class)->FindUserOrder($user);
         return $this->render('shopping_car/index.html.twig', [
-            'controller_name' => 'ShoppingCarController',
+            'order' => $order,
         ]);
     }
 
@@ -57,6 +60,27 @@ class ShoppingCarController extends AbstractController
             );
         }
         throw new \Exception('This is not an ajax Call');
-
     }
+
+
+    /**
+     * @Route("/shopping/car/delete/product/{id}", name="delete_product")
+     */
+    public function DeleteProduct(ProductOrder $productOrder){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($productOrder);
+        $em->flush();
+        return $this->redirectToRoute('shopping_car');
+    }
+
+    /**
+     * @Route("/shopping/car/change/ammount/product/{id}/{ammount}", name="change_ammount")
+     */
+    public function ChangeAmmount(ProductOrder $productOrder, $amount){
+        $em = $this->getDoctrine()->getManager();
+        $productOrder->setCantidad($amount);
+        $em->flush();
+        return $this->redirectToRoute('shopping_car');
+    }
+
 }

@@ -24,7 +24,6 @@ class OrderRepository extends ServiceEntityRepository
             ->createQuery('
                 SELECT orderr
                 FROM App:Order orderr
-                LEFT JOIN orderr.productOrders productOrder
                 WHERE orderr.user =:user_id AND orderr.status =:status
             ')
             ->setParameter('user_id', $user_id)

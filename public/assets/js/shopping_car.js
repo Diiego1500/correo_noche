@@ -1,7 +1,7 @@
 $('.add_car').click(function () {
-    var clase = event.target;
-    product_id = clase.getAttribute('data-id');
-    hash = clase.getAttribute('data-hash');
+    var product = event.target;
+    product_id = product.getAttribute('data-id');
+    hash = product.getAttribute('data-hash');
     Ruta = Routing.generate('add_producto_to_shopping_car');
     Swal.fire({
         title: 'Agregar Al Carrito de compras',
@@ -31,22 +31,6 @@ $('.add_car').click(function () {
 
         }
     });
-    //
-    // var clase = event.target;
-    // product_id = clase.getAttribute('data-id');
-    // hash = clase.getAttribute('data-hash');
-    // Ruta = Routing.generate('add_producto_to_shopping_car');
-    // $.ajax({
-    //     type: 'POST',
-    //     url: Ruta,
-    //     data: ({product_id: product_id, hash: hash}),
-    //     async: true,
-    //     dataType: "json",
-    //     success: function (data) {
-    //         var product_order = addProduct(data['product_name'], data['product_price'], data['product_ammount']);
-    //         $('#shopping_car').append(product_order);
-    //     }
-    // });
 });
 
 function addProduct(product_name, product_price, product_ammount) {
@@ -60,6 +44,4 @@ function addProduct(product_name, product_price, product_ammount) {
         "</div>" +
         "</div>";
     return product_order;
-}
-
-// Swal.fire('Any fool can use a computer')
+};
