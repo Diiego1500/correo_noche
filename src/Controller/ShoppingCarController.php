@@ -6,6 +6,7 @@ use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\ProductOrder;
 use App\Entity\User;
+use App\Form\OrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +17,36 @@ class ShoppingCarController extends AbstractController
     /**
      * @Route("/shopping/car", name="shopping_car")
      */
-    public function index()
+    public function index(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $order = $em->getRepository(Order::class)->FindUserOrder($user);
+        $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
+        $form = $this->createForm(OrderType::class, $order);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $paymentMethod = $form->get('paymentMethod')->getData();
+            $total_ammount = 0;
+            foreach ($order->getProductOrders() as $productorder){
+                $product = $productorder->getProduct();
+                $subtotal = $product->getPrice() * $productorder->getCantidad();
+                $total_ammount += $subtotal;
+            }
+
+            $order->setPaymentMethod($paymentMethod);
+            $order->setStatus(Order::STATUS[2]);
+            $order->setTotalValue($total_ammount);
+            $order->setRealizationDate(new \DateTime());
+            $em->flush();
+            return $this->redirectToRoute('shopping_car');
+
+        }
+
+
         return $this->render('shopping_car/index.html.twig', [
             'order' => $order,
+            'form'=>$form->createView()
         ]);
     }
 

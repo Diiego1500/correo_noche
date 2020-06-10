@@ -13,44 +13,54 @@
             <div class="col-md-8">
                 <h5 class="my-2">Mi orden</h5>
                 <div class="row" style="height: 500px; overflow-y: scroll; overflow-x: hidden;">
-                    {% for order in order.productOrders %}
-                        {% set product = order.product %}
-                        {% set subtotal = (order.cantidad * product.price) %}
-                        <div class="col-md-3 p-3 my-2 border">
-                            <img class="rounded" src="{{ asset('uploads/product/'~product.photo) }}"
-                                 alt="{{ product.name }}" width="100%">
-                        </div>
-                        <div class="col-md-9 p-3 my-2 border">
-                            <h5>{{ product.name }}</h5>
-                            <div>Precio Unidad: ${{ product.price }}</div>
-                            <div>Cantidad: {{ order.cantidad }}</div>
-                            <div>Subtotal: ${{ subtotal }}</div>
-                            <div><a href="{{ path('delete_product',{id: order.id}) }}">Sacar del Carrito</a></div>
-                            <a data-toggle="collapse" href="#collapse{{ order.id }}" role="button" aria-expanded="false"
-                               aria-controls="collapseExample">
-                                Cambiar Cantidad
-                            </a>
-                            <div class="collapse" id="collapse{{ order.id }}">
-                                <div class="card card-body">
-                                    <div>
-                                        <input type="number" id="ammount_{{ order.id }}">
-                                        <button class="change_ammount" data-id="{{ order.id }}">Cambiar Cantidad
-                                        </button>
+                    {% if order is not null %}
+                        {% for order in order.productOrders %}
+                            {% set product = order.product %}
+                            {% set subtotal = (order.cantidad * product.price) %}
+                            <div class="col-md-3 p-3 my-2 border">
+                                <img class="rounded" src="{{ asset('uploads/product/'~product.photo) }}"
+                                     alt="{{ product.name }}" width="100%">
+                            </div>
+                            <div class="col-md-9 p-3 my-2 border">
+                                <h5>{{ product.name }}</h5>
+                                <div>Precio Unidad: ${{ product.price }}</div>
+                                <div>Cantidad: {{ order.cantidad }}</div>
+                                <div>Subtotal: ${{ subtotal }}</div>
+                                <div><a href="{{ path('delete_product',{id: order.id}) }}">Sacar del Carrito</a></div>
+                                <a data-toggle="collapse" href="#collapse{{ order.id }}" role="button"
+                                   aria-expanded="false"
+                                   aria-controls="collapseExample">
+                                    Cambiar Cantidad
+                                </a>
+                                <div class="collapse" id="collapse{{ order.id }}">
+                                    <div class="card card-body">
+                                        <div>
+                                            <input type="number" id="ammount_{{ order.id }}">
+                                            <button class="change_ammount" data-id="{{ order.id }}">Cambiar Cantidad
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% set total_ammount = total_ammount + subtotal %}
+                            {% set total_ammount = total_ammount + subtotal %}
+                        {% endfor %}
                     {% else %}
                         <div class="col-md-12 alert alert-warning">
                             <h6 class="text-center">El carrtito de compras está vacío</h6>
                         </div>
-                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-2 bg-info">
                     Total: ${{ total_ammount }}
+                </div>
+                <div>
+                    {{ form_start(form) }}
+                    {{ form_widget(form.paymentMethod, { 'attr': {'class': 'foo'} }) }}
+                    {{ form_widget(form.totalValue, { 'attr': {'value': total_ammount, 'disabled':true} }) }}
+
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>

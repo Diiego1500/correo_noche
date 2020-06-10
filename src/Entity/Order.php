@@ -14,7 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Order
 {
 
-    const STATUS = ['Finalizado', 'En Proceso'];
+    const STATUS = ['Finalizado', 'En Proceso', 'En proceso de despacho'];
+    const PAYMENT_METHOD = ['Efectivo'=>'Efectivo', 'Datafono'=>'Datafono', 'Pago en linea'=>'Pago en linea'];
 
     /**
      * @ORM\Id()
@@ -64,6 +65,7 @@ class Order
         $this->user = $user;
         $this->status = self::STATUS[1];
         $this->productOrders = new ArrayCollection();
+        $this->discount = 0;
     }
 
     public function getId(): ?int
