@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class SecurityController extends AbstractController
 {
@@ -41,7 +43,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request,UserPasswordEncoderInterface $passwordEncoder){
+    public function register(Request $request,UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger){
         $newUser = new User();
         $registerForm = $this->createForm(UserType::class, $newUser);
         $registerForm->handleRequest($request);
@@ -49,6 +51,26 @@ class SecurityController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $password = $registerForm->get('password')->getData();
             $newUser->setPassword($passwordEncoder->encodePassword($newUser, $password));
+            $photo = $registerForm->get('photo')->getData();
+            if($photo){
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photo->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $photo->move(
+                        $this->getParameter('photos_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    throw new \Exception('Hubo un error con tu foto');
+                }
+                $newUser->setPhoto($newFilename);
+            }
+
+
             $em->persist($newUser);
             $em->flush();
             return $this->redirectToRoute('app_login');

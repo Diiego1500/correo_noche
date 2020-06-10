@@ -6,6 +6,7 @@
 parameters:
     category_directory: '%kernel.project_dir%/public/uploads/category'
     product_directory: '%kernel.project_dir%/public/uploads/product'
+    photos_directory: '%kernel.project_dir%/public/uploads/photos'
 
 services:
     # default configuration for services in *this* file

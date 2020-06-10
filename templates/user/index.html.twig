@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello ShoppingCarController!{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="row">
+            {% for user in users %}
+                <div class="col-md-3 p-2 text-center">
+                    <div class="p-2 border rounded">
+                        <img class="rounded" src="{{ asset('uploads/photos/'~user.photo) }}" alt="{{ user.name }}"
+                             width="100%">
+                        <div><small><strong>{{ user.name }} {{ user.lastName }}</strong></small></div>
+                        <hr>
+                        <small>
+                            <div>Teléfono: {{ user.phone }}</div>
+                            <div>Email: {{ user.email }}</div>
+                            <div>Dirección: {{ user.address }}</div>
+                            <div>Bario: {{ user.neighborhood }}</div>
+                            <div><a href="{{ path('client_sales', {hash:user.hash}) }}">Ver Compras</a></div>
+                        </small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
