@@ -7,7 +7,7 @@
             {% for order in orders %}
                 <div class="col-md-6 my-2">
                     <div class=" p-2 border rounded">
-                        <div>Compra Realizada el: <strong>{{ order.realizationdate| date }}</strong></div>
+                        <div>Compra Realizada el: <strong>{{ order.realizationdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong></div>
                         <div>Método de pago: {{ order.paymentMethod }}</div>
                         <div>
                             Estado del pedido: {{ order.status }} -

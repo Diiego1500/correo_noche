@@ -1,0 +1,831 @@
+INICIO DEAgregar SYMFONY export PATH="$HOME/.symfony/bin:$PATH"
+CONTRASEÑA MYSQL: Diiego150<>
+/opt/PhpStorm/bin/phpstorm.sh
+https://www.youtube.com/watch?v=_HeA_I3KDFg
+
+php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
+
+sudo apt-get update
+sudo apt-get install xvfb libfontconfig wkhtmltopdf
+
+======================================================================================================
+CSV:
+https://www.youtube.com/watch?v=H9lGJ8XVmAw
+https://symfonycasts.com/screencast/symfony-bundle/autowiring-public-private
+======================================================================================================
+
+
+https://ourcodeworld.com/articles/read/798/how-to-create-an-excel-file-with-php-in-symfony-4
+
+MANUAL DE INSTALACIÓN DEL ENTORNO DE TRABAJO EN LUBUNTU; SEGUIR PASO A PASO:
+
+DESPUES DE INSTALAR LUBUNTU EN NUESTRO EQUIPO, EL ORDEN DE INSTALACIÓN ES EL 
+SIGUIENTE: MYSQL, APACHE, PHP, COMPOSER Y NODE, NPM, YARN  Y FINALMENTE SYMFONY. 
+
+Herramientas como GIT o SUBLIME se instalan al final
+
+(1)=====================INSTALACIÓN DE MYSQL======================(1)
+
+-Se deben actualizar los paquetes registrados en linux:
+	Ejecutar: sudo apt update
+
+-A continuación se instala el servidor de Mysql en local:
+	Ejecutar: sudo apt install mysql-server
+	
+-Una vez instalado el mysql server, este debe ser configurado de la siguiente manera, seguir el paso a paso:
+	
+	Se encuentra sin contraseña, para ello se la asignamos con el siguiente comando, una vez que le ponemos y 
+	confirmamos la contraseña, dar en Y a todo lo que sigue
+	
+	Ejecutar: sudo mysql_secure_installation
+	
+	Esto configura el metodo de autenticacion utilizando el plugin auth_socket, esto permite que la seguridad sea mayor
+	pero complica el acceso a otros programas como el PHPMYADMIN e imposibilita el acceso al programa que desarrollaremos 
+	VIGIGAS, así que debemos cambiar el pligun de autenticación:
+	
+	Entramos a MYSQL
+	Ejecutar: sudo mysql
+	
+	Una vez dentro de MYSQL
+	EJECUTAR: SELECT user,authentication_string,plugin,host FROM mysql.user;
+	(Se nos presentará una tabla, el user root está utilizando el plugin auth_socket, cambiamos)
+	
+	DONDE DICE PASSWORD DEBE SER REEMPLAZADO POR UNA CONTRASEÑA SEGURA, DE LO CONTRARIO NO LO DEJARA PROCEDER
+	
+	EJECUTAR: ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+	
+	Una vez ejecutado el query, le hacemos flush para Terminar la configuración en la BD: 
+	EJECUTAR: FLUSH PRIVILEGES;
+	
+	
+	SI SE DESEA, PUEDE REVISAR NUEVAMENTE LA TABLA Y VERIFICAR QUE EL PLUGIN DEL USUARIO ROOT YA NO ES AUTH_SOCKET
+	
+	EJECUTAR: SELECT user,authentication_string,plugin,host FROM mysql.user;
+	
+	el plugin de acceso debería ser: mysql_native_password, si es así, todo está bien. si no, a rezarle a los santos de la programación.
+	
+	ya nos podemos saliir con el comando exit
+	
+	ejecutar: exit
+	
+	(
+	
+	* EN CASO DE QUE QUERAMOS INICIAR POR CONSOLA, DEBEMOS UTILIZAR LA CONTRASEÑA QUE CONFIGURAMOS AL
+	EJECUTAR EL COMANDO ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+	
+	* Y ENTRAR UTILIZANDO: mysql -u root -p
+	
+	* CON ESTO YA PODREMOS ENTRAR A PHPMYADMIN Y NUESTRA APLICACIÓN VIGIGAS TIENE ACCESO Y PERMISO DE INTERACTUAR CON NUESTRA
+	BD
+	
+	)
+	
+	
+	
+(2)=================INSTALACIÓN DE APACHE Y PHP======================(2)
+
+Apache y php los podemos instalar utilizando LAMP, nos mostrará algunas interfaces azules, escogemos APACHE2, 
+Damos una contraseña al root de mysql (La cual no debería afectar a nuestra configuración anterior, sin embargo pones la misma que has 
+ingresado en el comando, reemplazando la palabra password)
+
+EJECUTAR: sudo apt-get install lamp-server^ phpmyadmin
+
+Y DARLE SÍ A TODO LO QUE APAREZCA.
+
+ESTO CREARÁ UNA CARPETA NUEVA, LA CUAL SIMULARÁ EL SERVIDOR. SE ENCUENTRA EN: /var/www 
+ES UNA CARPETA DEL SISTEMA, EN WWW HAY UNA CARPETA HTML, LA CUAL CONTIENE NUESTRO PROYECTO, ASÍ QUE
+DEBEMOS ASIGNARLE PERMISOS DE ESCRITURA A WWW
+
+sudo chmod -R +w /var/www <- RECOMENDADA
+sudo chmod -R 777 /var/www <- NOVATOS
+
+Esto me generará un problema con PHPMYADMIN, NO SE PUEDE ACCEDER, ASÍ QUE SE SOLUCIONA ASÍ:
+
+sudo nano /etc/apache2/apache2.conf <- Abrir el archivo apache2.cong (si quieres con NANO)
+
+Include /etc/phpmyadmin/apache.conf <- Incluyes esta linea de codigo
+
+/etc/init.d/apache2 restart <-Reiniciar apache
+
+YA PODRÁS ABRIR PHPMYADMIN
+
+(3)==========================INSTALAR COMPOSER===========================(3)
+
+Antes que nada, debemos tener instalado curl en nuestro sistema, esto se hace escribiendo el siguiente comando en la consola:
+	
+	sudo apt-get install curl
+	
+	
+Una vez instalado curl empezamos con la instalación de Composer, esto se hace, al igual que la instalación de curl, dentro de la consola, tenemos que escribir el siguiente comando:
+	
+	curl -sS https://getcomposer.org/installer | php
+	
+	Comando de arriba sirve para descargar Composer
+	
+Esto hará que se descargue en nuestra carpeta home el archivo composer.phar el cuál tendría que ser llamado cada vez que queramos hacer uso de el, vamos a instalarlo de manera global para que Composer pueda ser llamado desde cualquier lugar sin importar la carpeta en la que nos encontremos, esto se hace pasando el archivo composer.phar a la carpeta /usr/local/bin y se hace con el siguiente comando:
+
+
+
+sudo mv ~/composer.phar /usr/local/bin/composer
+SI NO FUNCIONA:
+sudo mv /home/username/composer.phar /usr/local/bin/composer <- cambiar username por tu nombre de usuario de la maquina
+
+EJECUTAR: composer
+
+y deberíamos tener composer instalado
+
+
+======================
+Y LISTO! SOLO ES CLONAR EL PROYECTO Y CREAR LA BASE DE DATOS:
+
+Instalar SUBLIME TEXT:
+https://www.youtube.com/watch?v=OIIHqes74mU
+Instalar GIT: 
+https://openwebinars.net/blog/como-instalar-git-en-ubuntu/
+
+
+==================================
+
+
+Primero puedo instalar MYSQL SERVER 
+https://www.digitalocean.com/community/tutorials/como-instalar-mysql-en-ubuntu-18-04-es
+
+Seguidamente puedo instalar LAMP
+http://www.pachinn.com/2016/09/instalar-lamp-linux-apache-mysql-y-php-en-linux-mint-facil-y-rapido.html
+
+Esto me generará un problema con PHPMYADMIN, NO SE PUEDE ACCEDER, ASÍ QUE SE SOLUCIONA ASÍ:
+sudo -H gedit /etc/apache2/apache2.conf <- Abrir el archivo apache2.cong (si quieres con NANO)
+Include /etc/phpmyadmin/apache.conf <- Incluyes esta linea de codigo
+/etc/init.d/apache2 restart <-Reiniciar apache
+
+A continuación puedes instalar COMPOSER para el gestor de datos de Symfony:
+https://styde.net/instalacion-de-composer-y-laravel-en-ubuntu-14-lts-paso-a-paso/
+
+Necesitamos instalar NODE, así que debemos configurar la carpeta de instalación: 
+
+https://lignux.com/tutorial-para-solucionar-no-se-pudo-bloquear-varlibdpkglock-open-11-recurso-no-disponible-temporalmente/
+
+sudo fuser -vki  /var/lib/dpkg/lock
+sudo rm -f /var/lib/dpkg/lock
+sudo dpkg --configure -a
+sudo apt-get autoremove
+
+Seguidamente instalamos NODE:
+
+sudo apt update
+sudo apt install nodejs
+sudo apt install npm
+
+
+===INSTALAR YARN===
+https://linuxize.com/post/how-to-install-yarn-on-ubuntu-18-04/
+
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+sudo apt update
+
+sudo apt install yarn
+
+yarn --version
+=========================
+
+Y finalmente descargas un proyecto symfony:
+
+https://www.youtube.com/watch?v=VfwhOS9VmzE
+
+==========================COMANDOS SYMFONY=====================
+
+==============SYMFONY 4======================
+============================================================configuracion inicial================================================
+symfony new my_project_name --full
+symfony server:start
+symfony server:stop
+INICIO DE SYMFONY export PATH="$HOME/.symfony/bin:$PATH"
+
+
+You can stop the server using:
+
+php bin/console server:stop
+
+or you can force server to start even if previous one is running:
+
+php bin/console server:start --force
+
+
+
+
+
+https://twig.symfony.com/doc/2.x/
+
+
+composer require asset
+composer require server --dev
+composer require symfony/translation
+========================================
+composer require doctrine maker
+  make:command
+  make:controller <- composer require annotations
+  make:entity
+  make:form
+  make:functional-test
+  make:subscriber
+  make:twig-extension
+  make:unit-test
+  make:validator
+  make:voter
+
+php bin/console make:controller (ejemplo)
+========================================
+==TWIG==
+composer require twig (los twig se guardan en la carpeta template)
+==TWIG==
+==============BASES DE DATOS===============
+composer require doctrine maker
+
+
+php bin/console doctrine:database:create <- Crea la BD
+php bin/console make:entity Name  <- Crea Entidades
+
+php bin/console doctrine:migrations:diff <- genera las migraciones
+php bin/console doctrine:migrations:migrate <- ejecuta el codigo sql de las migraciones generadas
+(getters y setters se generan manualmente - o con phpstorm)
+php bin/console doctrine:schema:update --force
+
+http://symfony.com/doc/current/reference/constraints/Type.html#reference-constraint-type-type
+
+==============BASES DE DATOS===============
+
+
+
+===============FORMS===================
+composer require form
+http://symfony.com/doc/current/forms.html (Built-in Field Types)
+Para que los formularios utilicen un template por defecto:
+config>packages>twig  / Agregar:
+form_themes:
+        - 'bootstrap_4_layout.html.twig'
+
+===============FORMS===================
+
+================FOSUSERBUNDLE==============
+framework.yaml agregar bajo el framework: los servicios de traduccion
+
+1) translator: ~
+
+2)DEscomentar las sesiones
+
+    session:
+        handler_id: ~
+
+3)LIMPIAR CACHE
+3.1) composer require symfony/templating
+3.2) composer require symfony/validator
+4)dentro del framework.yaml 
+
+
+fos_user:
+    registration:
+            confirmation:
+                enabled: true
+    db_driver: orm
+    firewall_name: main
+    user_class: App\Entity\User
+    from_email:
+           address: correo@algo.com
+           sender_name: toFront
+    service:
+            mailer: 'fos_user.mailer.noop'
+
+
+
+5) ejecutar 
+composer require friendsofsymfony/user-bundle "~2.0"
+//con el skeleton de symfony se automatizan procesos, agregando el bundle al bundles.php de symfony. y resgistrandolo automaticamente
+
+
+6) Crear mi clase USER (Entidad)
+
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ */
+class User extends BaseUser
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
+}
+
+
+
+7) Configurar los parametros de seguridad (borrar todo y agregar):
+Config> pagckage >security.yml
+
+security:
+    encoders:
+            FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+            ROLE_ADMIN:       ROLE_USER
+            ROLE_SUPER_ADMIN: ROLE_ADMIN
+    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        fos_userbundle:
+                id: fos_user.user_provider.username
+        in_memory: { memory: ~ }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: ^/
+            form_login:
+              provider: fos_userbundle
+              csrf_token_generator: security.csrf.token_manager
+
+            logout:       true
+            anonymous:    true
+
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+            - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/admin/, role: ROLE_ADMIN }
+
+8) configurar en el archivo de rutas
+# config/routing.yaml
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+
+9) Actualizar el esquema da la bd
+
+
+(Puede generar probleas con las migraciones debido a que la base de datos postgrest es muy actualizada. para ello):
+https://github.com/doctrine/dbal/issues/2868
+
+10) Registrar las rutas en 
+#/config/routing.yml
+
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+
+
+USO DEL FOS USER BUNDLE
+Crear Usuarios
+php bin/console fos:user:create
+
+(ROL ADMIN SE AGREGA POR DEFECTO)
+Asignar Rol:
+php bin/console fos:user:promote
+
+
+https://symfony.com/doc/master/bundles/FOSUserBundle/command_line_tools.html <-  Comandos.
+https://github.com/FriendsOfSymfony/FOSUserBundle/issues/139 <- resolver problemas con tabla User en postgres
+
+
+================FOSUSERBUNDLE==============
+
+composer require symfony/apache-pack <- (correr server desde apache)
+
+Runserver:
+php -S 127.0.0.1:8000 -t public
+
+
+
+=============================
+public function request_detail(Request $request){
+        if(!$request->isXmlHttpRequest()){
+            throw new Exception("Ups! something is wrong, this is not an ajax request");
+        }
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->request->get('id');
+        $request_id = $request->request->get('request_id');
+        $customer = $em->getRepository(Customer::class)->find($id);
+        $solicitude = $em -> getRepository(Solicitude::class)->find($request_id);
+        return $this->render('adviser_templates/view_request_detail.html.twig', array("customer"=>$customer, "solicitude" =>$solicitude));
+//        $customer_response = array(
+//            //Custom params
+//            "id"=>$customer->getId(),
+//            "name"=>$customer->getName(),
+//            "lastname"=> $customer->getLastname(),
+//            "mobile"=>$customer->getMobile(),
+//            "telephone"=>$customer->getTelephone(),
+//            "country"=>$customer->getCountry()->getName(),
+//            //request params
+//            "solicitude_id"=>$solicitude->getId(),
+//            "companyname"=>$solicitude->getCommpanyName(),
+//            "createDate"=>$solicitude->getCreatedat(),
+//            "state"=>$solicitude->getState()
+//            );
+//        $response =  new Response(\json_encode($customer_response));
+//        $response->headers->set('content-Type', 'application/json');
+//        return $response;
+
+    }
+
+
+            success: function (data) {
+                console.log(data['state']);
+            }
+================================================
+
+https://symfony.com/doc/current/reference/constraints/UniqueEntity.html#basic-usage
+yarn install
+yarn run encore dev
+
+
+
+
+
+//PARA EL ENVIO DE EMAILS 
+ES NECESARIO TENER UNA CUENTA EN UN SERVIDOR DE CORREOS, SMPT ES EL PROTOCOLO DE ENVIO DE MENSAJES PLANOS
+SYMFONY UTILIZA EL SWIFTMAILER PARA EL ENVIO DE CORREOS ELECTRONICOS, POR DEFECTO, EL FOSUSERBUNDLE UTILIZA ESTE 
+SWIFTMAILER TAMBIEN. 
+
+SI SE USA EL REGISTER DEL FOSUSERBUNDLE, NO ES NECESARIO HACER CONFIGURACIONES
+YA QUE EL CONTROLADOR LO HACE TODO.
+PERO SI SE DESEA TENER UN CONTROLADOR PERSONAL PODRÍA USARSE ESTA REFERENCIA:
+
+//Este metodo registra un usuario, le pone el token en falso, dicho token pasa a true una vez se ha
+//dado click en el link que le llega al cliente
+
+
+
+    private function register($email, $username, $password)
+    {
+        $userManager = $this->get('fos_user.user_manager');
+        $mailer = $this->get('fos_user.mailer');
+        $email_exist = $userManager->findUserByEmail($email);
+        $token = sha1(uniqid(mt_rand(), true));
+        if ($email_exist) {
+            return false;
+        }
+        $user = $userManager->createUser();
+        $user->setUsername($username);
+        $user->setEmail($email);
+        $user->setEmailCanonical($email);
+        $user->setEnabled(false);
+        $user->setPlainPassword($password);
+        $user->addRole('ROLE_CUSTOMER');
+        $user->setConfirmationToken($token);
+        $mailer->sendConfirmationEmailMessage($user);
+        $userManager->updateUser($user);
+        return $user;
+    }
+}
+
+//El confirmationEnabled se activa en el framework.yaml  cuando en el fos_user se pone: 
+
+    registration:
+            confirmation:
+                enabled: true
+
+
+    public function index(Request $request)
+    {
+        $customer = new Customer();
+        $form = $this->createForm(CustomerType::class, $customer);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $pass = $form->get('password')->getData();
+            $email = $form->get('email')->getData();
+            $user=$this->register($email, $email, $pass);
+            $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
+            if($confirmationEnabled){
+                $this->container->get('session')->set('fos_user_send_confirmation_email/email',$user->getEmail());
+                $route = 'fos_user_registration_check_email';
+                $url = $this->container->get('router')->generate($route);
+                $em->persist($customer);
+                $em->flush($customer);
+                return new RedirectResponse($url);
+            }
+
+        }
+        return $this->render('backend/customer/customer_register.html.twig', array('form' => $form->createView()));
+    }
+
+
+EJEMPLO DEL .ENV
+
+MAILER_URL=smtp://s6.g3tm.com?encryption=ssl&auth_mode=login&username=tofront@modomxclientes.com&password=qazxsw21@2018
+
+Documentacion:
+https://symfony.com/doc/current/email.html
+
+(Para mas referencia consultar el proyecto TOFRONT)
+=============================================================================================
+
+Instalar localizeddate
+SI ESTAS EN LINUX, DEBES INSTALAR EL INTL Y OMITIR EL PASO 1:
+sudo apt-get install php7.2-intl
+
+LUEGO, REINICIAR EL APACHE Y CONTINUAS AL PASO 2
+sudo service apache2 restart
+1 -> activar el intl en el xampp
+2 -> composer require symfony/intl
+3
+    3.1 -> composer require twig/twig "^2.10"
+    3.2 -> composer require twig/extensions
+4 )
+Enable the intl twig extension in config.yml or services.yml file:
+
+services:
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+5) recomendable borrar caché
+================
+BARRA DE BUGS
+
+composer require profiler --dev
+https://stackoverflow.com/questions/8749939/how-do-i-disable-the-symfony-2-profiler-bar <- desactivar
+
+
+====================
+
+Hacer funcionar el llamado Ajax
+https://openclassrooms.com/forum/sujet/symfony-3-4-avec-jquery-ajax
+
+========================
+basarse en el proyecto stars del htdocs
+
+WEBPACK
+Instalar NODE.js
+Instalar Encore via composer:
+
+1)composer require encore  <- descarga e instala un bundle llamado webpackencorebundle
+
+Se generan algunos archivos para empezar:
+(package.json, webpack.config.js)
+(el package.json es como el el composer.json de el mundo de node, 
+este archivo contiene todas las dependencias del webpack, sin embargo
+requiere de dos paquetes adicionales, para descargarlos, ejecutar):
+
+2)yarn  (También sirve yarn insall, es lo mismo)
+
+NODE TIENE DOS MANEJADORES DE PAQUETES: YARN Y NPM  PERO SE PUEDE USAR CUALQUIERA
+AL ejecutar yarn, nos instaló las dependencias que están en: 
+packaje.json en el espacio devDependencies
+
+Para empezar: Webpack solo necesita saber 3 cosas: (webpack.config.js)
+
+
+setOutputPath('public/build/') <- Donde los assets compilados serán almacenados
+setPublicPath('/build') <- directorio publico al cual accederá el servidor 
+addEntry('app', './assets/js/app.js') (Aquí es donde todo empieza realmente)
+
+LA IDEA ES APUNTAR EL WEBPACK A UN SOLO ARCHIVO JAVASCRIPT ASSETS/JS/APP.JS, LUEGO, PARSEA TODO LOS ARCHIVOS IMPORTADOS, PONE TODO EL CODIGO JUNTO
+Y RETORNE UN ARCHIVO EN PUBLIC/BUILD LLAMADO APP.JS EL PRIMER ARGUMENTO DEL ADDENTRY ES EL NOMBRE DE ENTRADA, EL CUAL PUEDE SER CUALQUIERA, PERO
+CONTROLA EL ARCHIVO FINAL, CONVIRTIENDOSE EN PUBLIC/BUILD/APP.JS 
+
+./assets/js/app.js  <- ESTE ES EL ARCHIVO QUE WEBPACK EMPEZARÁ LEYENDO
+SE PUEDE IMPORTAR CSS TAMBIÉN! 
+
+ya que en en assets/js/app.js es el archivo que webpack empieza leyendo
+(Notar que se puede importar archivos css también)
+
+3) Dentro del webpack.config
+Comentar: .enableSingleRuntimeChunk()
+y poner: disableSingleRuntimeChunk()
+
+4)  ./node_modules/.bin/encore dev (Compila y renderiza los assets en public/build con el nombre app.js, teniendo en cuenta el flujo descrito anteriormete)
+
+================================================================================
+5) Agregar el app.css y el app.js en la base.html.twig:
+FORMA VIEJA: 
+<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+<script src="{{ asset('build/app.js') }}"></script>
+
+PERO CUANDO TRABAJAMOS CON SYMFONY, NO QUEREMOS HACER ESTO A MANO, ASÍ QUE SERÉ PEREZOSO Y 
+UTILIZARÉ UNAS FUNCIONES DEL WebPackEncoreBundle
+
+PARA STYLESHEETS:
+{{ encore_entry_link_tags('app')}} (Por que este es el nombre que puse en el addEntry)
+{{ encore_entry_script_tags('app')}}
+
+
+¿Como funciona? en el BUILD  del public, hay un archivo llamado entrypoints.json, este es  un mapa de cada nombre de los archivos CSS y JS que
+son necesarios para ejecutar
+
+CADA VEZ QUE NOSOTROS HACEMOS UN CAMBIO, DEBEMOS EJECTURAR EL SIGUIENTE COMANDO PARA COMPILAR Y RENDERIZAR LOS CAMBIOS EN EL APP.JS
+
+./node_modules/.bin/encore dev
+
+Pero c: WEBPACK tambien tiene un WATCH mode, el cual estará monitoreando los archivos JS y CSS esperando cambios y de esta manera no tener
+que ejecutar el comando cada que hacemos un cambio: 
+
+./node_modules/.bin/encore dev --watch <- RECONSTRUYE AUTOMÁTICAMENTE C;
+
+O TAMBIÉN 
+
+yarn watch <-HACE LO MISMO C;
+
+================================================================================
+
+LOS ARCHIVOS JS VAN DENTRO DE ASSETS/JS, SE CREA EL ARCHIVO CON SU NOMBRE Y PARA EXPORTAR ALGO COMO
+UNA FUNCIÓN, OBJETO O INCLUSO UN STRING LO PODEMOS HACER CON 
+
+module.exports = whatever you need, esto es conocido como un MODULO
+y en el app.js  const getNiceMessage = require('./get_nice_message'); --ESTANDO EN EL MISMO NIVEL QUE EL ARCHIVO APP.JS DEL DIRECTORIO)
+
+PERO LA RECOMENDACIÓN ES LA SIGUIENTE:
+
+export default function (Conteo_Exclamación){CODIGO AQUI}
+
+Y EN EL APP.JS = import getNiceMessage from './get_nice_message'; SI NO TIENE EL ./ WEBPACK busca dentro de node_modules
+
+
+Con el PACKAGE MANAGER incorporado en el webpack, podemos instalar codigo de terceros apropiadamente. Para instalar jquery:
+
+yarn add jquery --dev 
+
+Y SEGUIDAMENTE LO IMPORTAMOS EN EL APP.JS
+quedan guardados en el node_modules y CADA CODIGO de TERCEROS
+que instalemos debe tener un package.json en el cual debe
+tener una llave main, la cual le dice a webpack qué archivo exactamente debe 
+importar
+
+//AQUÍ IMPORTAMOS JQUERY EN APP.JS Y ESTABLECIMOS A $ COMO VARIABLE ...
+//SIN EMBARGO, EL $ NO  ESTÁ DEFINIDO AÚN, ESTO SE DEBE A QUE NO ES UNA VARIABLE GLOBAL.
+//RETORNA EL OBJETO JQUERY, PERO ES SOLO UNA VARIABLE LOCAL.
+import $ from 'jquery';
+
+PARA AGREGAR VARIABLES GLOBALES:
+
+global.$ = $; //PERO NO HAGAS VARIABLES GLOBALES A MENOS QUE TENGAS QUÉ.
+// global.$ = $;  ESTO ES UNA VARIABLE GLOBAL, PERO CON WEBPACK ESTO ESTÁ MUERTO, ASÍ QUE COMENTARÉ Y
+//EN PONDRÉ EL CÓDIGO QUE UTILIZA DICHA VARIABLE AQUÍ EN ESTE ARCHIVO PARA UTILIZAR LA VARIABLE LOCAL
+
+CUANDO INCLUIMOS BOOTSTRAP VIA ETIQUETA, EL ESPERA QUE JQUERY SEA UNA VARIABLE GLOBAL, Y ESTO YA NO
+EXISTE, SOLUCIONEMOS APROPIADAMENTE...
+
+
+
+PARA SABER EL NOMBRE DE LOS PAQUETES, LOS PUEDO CONSULTAR EN WWW.YARNPKG.COM/. Aquí buscamos bootstrap e instalamos bootstrap
+con webpack y NO VIA ETIQUETA.
+
+yarn add bootstrap --dev
+
+
+Luego importamos en app.js:
+
+import 'bootstrap' <- NO NECESITAMOS ESCRIBIR IMPORT $ FROM o nada por el estilo por que bootstrap
+es un plugin de JQUERY y BOOTSTRAP AÑADE FUNCIONES A JQUERY
+
+
+SIN EMBARGO, BOOTSTRAP DEPENDE DE POPPER.JS, HAY QUE INSTALARLO TAMBIEN
+
+yarn add popper.js --dev <- NO HAY NECESIDAD DE IMPORTARLO EN APP.JS PUES ES UNA DEPENDECIA DE BOOTSTRAP.
+
+
+SIN EMBARGO, HASTA AHORA SOLO HEMOS CONFIGURADO EL JS DE BOOTSTRAP, YA ESTÁ DESCARGADO, PERO NECESITAMOS
+INCORPORAR EL CSS DE BOOTSTRAP. PARA HACER ESTO, NECESITAMOS IMPORTAR EL CSS CON LA RUTA  COMPLETA QUE APARECE EN EL NODE_MODULES
+DENTRO DEL APP.CSS (ES MEJOR IMPOORTAR SOLO 1 CSS POR ENTRADA, ASÍ QUE ES POR ESO QUE NO LLAMAMOS AL BOOTSTRAP EN EL APP.JS, SINO EN EL APP.CSS) 
+
+dentro de app.css:
+
+@import "~bootstrap/dist/css/bootstrap.css"; <- ESTA ES LA MANERA DE HACERLO, PERO....
+
+EN EL NODE_MODULES, LA CARPETA BOOTSTRAP, EXISTE UN PACKAGE.JSON, ALGUNOS DE ESTOS PACKAGE.JSON
+TIENEN UNA LLAVE SASS O UNA LLAVE STYLE, LA CUAL APUNTA AL ARCHIVO CSS QUE REFERENCIAMOS EN EL IMPORT DEL CSS
+POR LO CUAL PODEMOS UTILIZARLO Y REDUCIR LA IMPORTACIÓN AL NOMBRE DEL PAQUETE:
+
+@import "~bootstrap";
+
+HACEMOS ESTO DENTRO DEL ARCHIVO CSS POR QUE EL SABE BUSCAR ESTA LLAVE Y RUTA DENTRO DEL PACKAGE.JSON
+
+
+Para instalar FONT-AWESOME:
+
+yarn add font-awesome --dev <- Esto crea la carpeta dentro del node_modules
+
+=PERO, Y SI YO QUIERO USAR Sass en lugar de Css normal?=
+
+Renombro el app.css a app.scss, cuando hacemos eso, la construcción falla por que necesitamos renombrar la importación en
+app.js de app.css a app.scss, aún asi, al renombrar, la construcción aún falla, debido a que debemos
+activar la funcionalidad en webpack.encore e instalar las librerias sass:
+
+en webpack.config descomento el .enableSassLoader() y seguidamente en el terminal
+ejecutar: yarn add sass-loader@^7.0.1 node-sass --dev
+
+OJO: CUANDO REALIZAS UN CAMBIO EN EL WEBPACK.CONFIG, DEBES REINICIAR EL WATCH DE YARN
+
+Para importar los scss en el app.scss no necesitamos el _ ni la extensión
+
+
+NO NECESITAMOS MANTENER MAS NUESTROS CSS, JAVASCRIPT, O ASSETS EN EL DIRECTORIO PUBLICO !!!! Sin embargo 
+¿Acaso el asset no ubica el puntero dentro de la carpeta pública? Pon todo en la carpeta assets, y en public solo estará
+la carpeta BUILD creada por el webpack encore, en la cual estarán las imágenes construidas dinámicamente :D
+
+SIN EMBARGO, HAY QUE COPIAR DICHOS ARCHIVOS EN EL BUILD, PARA ELLOS, EN EL WEBPACK.CONFIG, DEBAJO DEL ENABLESASLOADER(), PONDRÁS:
+
+    .copyFiles({
+        from: './assets/images', //RUTA DE DONDE COPIARÁ Y CONSTRUIRÁ LOS ARCHIVOS
+        to: 'images/[path][name].[hash:8].[ext]' //RUTA DESTINO, COMPUESTA POR EL NOMBRE Y UN HASH DINAMICO Y LA EXTENSIÓN.
+    })
+
+ASÍ QUE LOS ASSETS DE IMAGENES DEBEN ESTAR APUNTANDO A LA CARPETA IMAGES DEL BUILD
+
+HASTA AHORA HEMOS ESTADO TRABAJANDO EN 1 SOLO TEMPLATE, PERO ¿Y SI YO NECESITO SCSS O SCRIPTS PERSONALIZADOS EN MIS PAGÍNAS?
+
+Para ello, definimos el archivo JS dentro de assets y creamos una nueva entrada en el webpack.config apuntando al script personalizado
+del template, en dicho script irá el css, y los JS necesarios. Para llamarlo en el twig utilizamos 
+el comando: {{ encore_entry_script_tags('NombreEntrada')}}
+
+
+SI WEBPACK DETECTA QUE SE ESTÁ DUPLICANDO ALGUNA COSA, AUTOMATICAMENTE LA ARREGLA 
+
+
+========================
+
+vectorizacionanime@gmail.com
+Diiego150
+
+matemagicas0@gmail.com
+Diiego150<>
+ciudadela del valle manzana h casa 5
+
+
+http://gnula.nu/comedia/ver-the-sandlot-nuestra-pandilla-1993-online/
+Relaciones:
+https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/association-mapping.html#one-to-many-unidirectional-with-join-table
+
+CON DOCTRINE PARA UTILIZAR FECHAS, AÑOS:
+
+composer require beberlei/DoctrineExtensions
+
+doctrine:
+    orm:
+        dql:
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+
+
+$query = $em->createQuery('SELECT d FROM test d WHERE d.expDate > :today')
+    ->setParameter('today', new \DateTime())
+
+
+
+Para el GROUP BY debemos gestionar con este:
+
+https://ourcodeworld.com/articles/read/732/how-to-solve-mysql-syntax-error-or-access-violation-1055-expression-of-select-list-is-not-in-group-by-clause-and-contains-nonaggregated-column-which-is-not-functionally-dependent-on-columns-in-group-by-clause
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+
+

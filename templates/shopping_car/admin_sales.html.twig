@@ -12,7 +12,7 @@
                         <div>Teléfono: {{ order.user.phone }}</div>
                         <div>Dirección: {{ order.user.address }} - {{ order.user.city.name }}</div>
                         <hr>
-                        <div>Compra Realizada el: <strong>{{ order.realizationdate| date }}</strong></div>
+                        <div>Compra Realizada el: <strong>{{ order.realizationdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong></div>
                         <div>Método de pago: {{ order.paymentMethod }}</div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div>
