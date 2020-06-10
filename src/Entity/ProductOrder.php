@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProductOrder
 {
+    const EDITED = "¡Editado exitosamente!";
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

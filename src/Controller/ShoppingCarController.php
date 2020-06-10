@@ -74,12 +74,13 @@ class ShoppingCarController extends AbstractController
     }
 
     /**
-     * @Route("/shopping/car/change/ammount/product/{id}/{ammount}", name="change_ammount")
+     * @Route("/shopping/car/change/ammount/product/{id}/{ammount}", options={"expose"=true}, name="change_ammount")
      */
-    public function ChangeAmmount(ProductOrder $productOrder, $amount){
+    public function ChangeAmmount(ProductOrder $productOrder, $ammount){
         $em = $this->getDoctrine()->getManager();
-        $productOrder->setCantidad($amount);
+        $productOrder->setCantidad($ammount);
         $em->flush();
+        $this->addFlash('Edited', ProductOrder::EDITED);
         return $this->redirectToRoute('shopping_car');
     }
 

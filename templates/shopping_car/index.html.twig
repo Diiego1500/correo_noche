@@ -2,8 +2,13 @@
 {% block title %}Hello ShoppingCarController!{% endblock %}
 {% block body %}
     {{ parent() }}
-    {% set total_factura = 0 %}
+    {% set total_ammount = 0 %}
     <div class="container">
+        {% for message in app.flashes('Edited') %}
+            <div class="alert alert-success my-2">
+                {{ message }}
+            </div>
+        {% endfor %}
         <div class="row my-2">
             <div class="col-md-8">
                 <h5 class="my-2">Mi orden</h5>
@@ -21,12 +26,21 @@
                             <div>Cantidad: {{ order.cantidad }}</div>
                             <div>Subtotal: ${{ subtotal }}</div>
                             <div><a href="{{ path('delete_product',{id: order.id}) }}">Sacar del Carrito</a></div>
-                            <div>
-                                <input type="number" id="ammount_{{ order.id }}">
-                                <button class="change_ammount" data-id="{{ order.id }}">Cambiar Cantidad</button>
+                            <a data-toggle="collapse" href="#collapse{{ order.id }}" role="button" aria-expanded="false"
+                               aria-controls="collapseExample">
+                                Cambiar Cantidad
+                            </a>
+                            <div class="collapse" id="collapse{{ order.id }}">
+                                <div class="card card-body">
+                                    <div>
+                                        <input type="number" id="ammount_{{ order.id }}">
+                                        <button class="change_ammount" data-id="{{ order.id }}">Cambiar Cantidad
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {% set total_factura = total_factura + subtotal %}
+                        {% set total_ammount = total_ammount + subtotal %}
                     {% else %}
                         <div class="col-md-12 alert alert-warning">
                             <h6 class="text-center">El carrtito de compras está vacío</h6>
@@ -35,7 +49,9 @@
                 </div>
             </div>
             <div class="col-md-4">
-                {{ dump(total_factura) }}
+                <div class="p-2 bg-info">
+                    Total: ${{ total_ammount }}
+                </div>
             </div>
         </div>
     </div>
@@ -44,5 +60,6 @@
     {{ parent() }}
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('assets/js/sales.js') }}"></script>
 {% endblock %}
