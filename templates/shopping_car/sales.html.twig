@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello ShoppingCarController!{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <h3 class="my-2">Compras Realizadas por: {{ app.user.name }} {{ app.user.lastname }}</h3>
+        <div class="row">
+            {% for order in orders %}
+                <div class="col-md-6 my-2">
+                    <div class=" p-2 border rounded">
+                        <div>Compra Realizada el: <strong>{{ order.realizationdate| date }}</strong></div>
+                        <div>Método de pago: {{ order.paymentMethod }}</div>
+                        <div>Estado del pedido: {{ order.status }} - <strong>Total: ${{ order.totalvalue }}</strong></div>
+                        <a data-toggle="collapse" href="#collapse{{ order.id }}" role="button" aria-expanded="false"
+                           aria-controls="collapseExample">
+                            Ver productos
+                        </a>
+                        <div class="collapse my-2" id="collapse{{ order.id }}">
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for productorder in order.productOrders %}
+                                        {% set product = productorder.product %}
+                                        <tr>
+                                            <td>{{ product.name }}</td>
+                                            <td>{{ product.price }}</td>
+                                            <td>{{ productorder.cantidad }}</td>
+                                            <td>{{ product.price * productorder.cantidad }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

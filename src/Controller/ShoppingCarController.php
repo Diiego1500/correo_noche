@@ -39,7 +39,7 @@ class ShoppingCarController extends AbstractController
             $order->setTotalValue($total_ammount);
             $order->setRealizationDate(new \DateTime());
             $em->flush();
-            return $this->redirectToRoute('shopping_car');
+            return $this->redirectToRoute('client_sales');
 
         }
 
@@ -106,6 +106,16 @@ class ShoppingCarController extends AbstractController
         $em->flush();
         $this->addFlash('Edited', ProductOrder::EDITED);
         return $this->redirectToRoute('shopping_car');
+    }
+
+    /**
+     * @Route("/shopping/car/sales", options={"expose"=true}, name="client_sales")
+     */
+    public function ClientSales(){
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $orders = $em->getRepository(Order::class)->FindUserOrderSales($user);
+        return $this->render('shopping_car/sales.html.twig', ['orders'=>$orders]);
     }
 
 }
