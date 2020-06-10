@@ -7,12 +7,28 @@
             {% for order in orders %}
                 <div class="col-md-6 my-2">
                     <div class=" p-2 border rounded">
+                        <div>Cliente: {{ order.user.name }} {{ order.user.lastname }}</div>
+                        <div>Email: {{ order.user.email }}</div>
+                        <div>Teléfono: {{ order.user.phone }}</div>
+                        <div>Dirección: {{ order.user.address }} - {{ order.user.city.name }}</div>
+                        <hr>
                         <div>Compra Realizada el: <strong>{{ order.realizationdate| date }}</strong></div>
                         <div>Método de pago: {{ order.paymentMethod }}</div>
-                        <div>
-                            Estado del pedido: {{ order.status }} -
-                            <strong>Total: ${{ order.totalvalue }}</strong>
-                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div>
+                                Estado del pedido:
+                                <a href="{{ path('finish_sale', {id:order.id}) }}">
+                                    {{ order.status }}
+                                </a>
+
+                            </div>
+                            <div><strong>Total: ${{ order.totalvalue }}</strong></div>
+                        {% else %}
+                            <div>
+                                Estado del pedido: {{ order.status }} -
+                                <strong>Total: ${{ order.totalvalue }}</strong>
+                            </div>
+                        {% endif %}
                         <a data-toggle="collapse" href="#collapse{{ order.id }}" role="button" aria-expanded="false"
                            aria-controls="collapseExample">
                             Ver productos

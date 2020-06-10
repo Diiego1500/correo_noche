@@ -26,7 +26,10 @@
                         <a class="nav-link" href="{{ path('product_index') }}">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('client_sales') }}">Mis compras</a>
+                        <a class="nav-link" href="{{ path('client_sales',{hash:app.user.hash}) }}">Mis compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('clients_sales',{search:'recents'}) }}">Mis Ventas</a>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">

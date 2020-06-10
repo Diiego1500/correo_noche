@@ -39,7 +39,7 @@ class ShoppingCarController extends AbstractController
             $order->setTotalValue($total_ammount);
             $order->setRealizationDate(new \DateTime());
             $em->flush();
-            return $this->redirectToRoute('client_sales');
+            return $this->redirectToRoute('client_sales',['hash'=>$user->getHash()]);
 
         }
 
@@ -109,13 +109,37 @@ class ShoppingCarController extends AbstractController
     }
 
     /**
-     * @Route("/shopping/car/sales", options={"expose"=true}, name="client_sales")
+     * @Route("/shopping/car/buys/{hash}", name="client_sales")
      */
-    public function ClientSales(){
+    public function ClientSales($hash){
         $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
+        $user = $em->getRepository(User::class)->findOneBy(['hash'=>$hash]);
         $orders = $em->getRepository(Order::class)->FindUserOrderSales($user);
         return $this->render('shopping_car/sales.html.twig', ['orders'=>$orders]);
+    }
+
+    /**
+     * @Route("/shopping/car/sales/{search}", name="clients_sales")
+     */
+    public function ClientsSales($search){
+        $em = $this->getDoctrine()->getManager();
+        if($search == 'recents'){
+            $orders = $em->getRepository(Order::class)->FindRecentOrderSales();
+        }else{
+            $orders = $em->getRepository(Order::class)->findAll();
+        }
+        return $this->render('shopping_car/admin_sales.html.twig', ['orders'=>$orders]);
+    }
+
+
+    /**
+     * @Route("/shopping/car/finish/sale/{id}", name="finish_sale")
+     */
+    public function finishSale(Order $order){
+        $em = $this->getDoctrine()->getManager();
+        $order->setStatus(Order::STATUS[0]);
+        $em->flush();
+        return $this->redirectToRoute('clients_sales', ['search'=>'recents']);
     }
 
 }

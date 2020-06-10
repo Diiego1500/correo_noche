@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Order
 {
 
-    const STATUS = ['Finalizado', 'En Proceso', 'En proceso de despacho'];
+    const STATUS = ['Finalizado', 'En Proceso', 'En proceso de despacho', 'Despachado'];
     const PAYMENT_METHOD = ['Efectivo'=>'Efectivo', 'Datafono'=>'Datafono', 'Pago en linea'=>'Pago en linea'];
 
     /**
