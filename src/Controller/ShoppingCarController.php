@@ -115,7 +115,7 @@ class ShoppingCarController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findOneBy(['hash'=>$hash]);
         $orders = $em->getRepository(Order::class)->FindUserOrderSales($user);
-        return $this->render('shopping_car/sales.html.twig', ['orders'=>$orders]);
+        return $this->render('shopping_car/sales.html.twig', ['orders'=>$orders, 'user'=>$user]);
     }
 
     /**

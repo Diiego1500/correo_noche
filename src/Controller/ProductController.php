@@ -78,7 +78,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="product_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="product_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Product $product, SluggerInterface $slugger): Response
     {
@@ -112,7 +112,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="product_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Product $product): Response
     {
@@ -138,6 +138,6 @@ class ProductController extends AbstractController
             $order = null;
         }
         $products = $category->getProducts();
-        return $this->render('product/products_category.html.twig', ['products'=>$products, 'order'=>$order]);
+        return $this->render('product/products_category.html.twig', ['products'=>$products, 'order'=>$order, 'category'=>$category]);
     }
 }

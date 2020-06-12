@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Hello ShoppingCarController!{% endblock %}
+{% block title %}Mi pedido - El correo de la noche{% endblock %}
 {% block body %}
     {{ parent() }}
     {% set total_ammount = 0 %}
@@ -56,11 +56,21 @@
                     Total: ${{ total_ammount }}
                 </div>
                 <div>
-                    {{ form_start(form) }}
-                    {{ form_widget(form.paymentMethod, { 'attr': {'class': 'foo'} }) }}
-                    {{ form_widget(form.totalValue, { 'attr': {'value': total_ammount, 'disabled':true} }) }}
-
-                    {{ form_end(form) }}
+                    {% if total_ammount %}
+                        {{ form_start(form) }}
+                        <div class="row container">
+                            <div class="col-md-12 my-2"></div>
+                            {{ form_widget(form.paymentMethod, { 'attr': {'class': 'foo'} }) }}
+                            <div class="col-md-12 my-2">
+                                {{ form_widget(form.totalValue, { 'attr': {'value': total_ammount, 'disabled':true} }) }}
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    {% else %}
+                        <div class="alert alert-info">
+                            ¿Un poco perdido? da click <a href="{{ path('category_index') }}">Aquí</a> y empieza  a comprar!
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
