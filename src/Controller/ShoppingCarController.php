@@ -126,9 +126,9 @@ class ShoppingCarController extends AbstractController
         if($search == 'recents'){
             $orders = $em->getRepository(Order::class)->FindRecentOrderSales();
         }else{
-            $orders = $em->getRepository(Order::class)->findAll();
+            $orders = $em->getRepository(Order::class)->FindRecentDispachesSales();
         }
-        return $this->render('shopping_car/admin_sales.html.twig', ['orders'=>$orders]);
+        return $this->render('shopping_car/admin_sales.html.twig', ['orders'=>$orders, 'search'=>$search]);
     }
 
 
@@ -138,6 +138,7 @@ class ShoppingCarController extends AbstractController
     public function finishSale(Order $order){
         $em = $this->getDoctrine()->getManager();
         $order->setStatus(Order::STATUS[0]);
+        $order->setDispatchDate(new \DateTime());
         $em->flush();
         return $this->redirectToRoute('clients_sales', ['search'=>'recents']);
     }

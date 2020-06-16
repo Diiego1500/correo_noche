@@ -3,16 +3,42 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
+        <hr>
+        <div class="row">
+            <div class="col-md-8"><h4>Ventas</h4></div>
+            {% if search == 'recents' %}
+                <div class="col-md-4">
+                    <a href="{{ path('clients_sales',{search:'all'}) }}">Ver todas las ventas</a>
+                </div>
+                {% else %}
+                    <div class="col-md-4">
+                        <a href="{{ path('clients_sales',{search:'recents'}) }}">Ver ventas por despachar</a>
+                    </div>
+            {% endif %}
+        </div>
+        <hr>
         <div class="row">
             {% for order in orders %}
                 <div class="col-md-6 my-2">
-                    <div class=" p-2 border rounded">
+                    <div class="bg-white p-2 border rounded">
                         <div>Cliente: {{ order.user.name }} {{ order.user.lastname }}</div>
                         <div>Email: {{ order.user.email }}</div>
                         <div>Teléfono: {{ order.user.phone }}</div>
                         <div>Dirección: {{ order.user.address }} - {{ order.user.city.name }}</div>
                         <hr>
-                        <div>Compra Realizada el: <strong>{{ order.realizationdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong></div>
+                        <div>Compra Realizada el:
+                            <strong>{{ order.realizationdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong>
+                        </div>
+                        {% if order.dispatchdate is not null %}
+                            <div>Compra Despachada el:
+                                <strong>{{ order.dispatchdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong>
+                            </div>
+                        {% else %}
+                            <strong style="color: blueviolet">
+                                Esta Compra aún no ha sido despachada
+                            </strong>
+                        {% endif %}
+
                         <div>Método de pago: {{ order.paymentMethod }}</div>
                         {% if is_granted('ROLE_ADMIN') %}
                             <div>

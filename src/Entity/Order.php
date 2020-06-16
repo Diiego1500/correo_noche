@@ -50,6 +50,11 @@ class Order
     private $paymentMethod;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dispatch_date;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -175,4 +180,22 @@ class Order
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDispatchDate()
+    {
+        return $this->dispatch_date;
+    }
+
+    /**
+     * @param mixed $dispatch_date
+     */
+    public function setDispatchDate($dispatch_date): void
+    {
+        $this->dispatch_date = $dispatch_date;
+    }
+
+    
 }

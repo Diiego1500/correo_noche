@@ -56,4 +56,14 @@ class OrderRepository extends ServiceEntityRepository
             ->setParameter('status', Order::STATUS[2])
             ->getResult();
     }
+
+    public function FindRecentDispachesSales(){
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT orderr
+                FROM App:Order orderr
+                ORDER BY orderr.dispatch_date DESC
+            ')
+            ->getResult();
+    }
 }

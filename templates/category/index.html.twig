@@ -7,14 +7,13 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
-        <h4 class="text-center my-4">¿Qué deseas comprar?</h4>
+        <h2 class="text-center my-4">¿Qué deseas comprar?</h2>
         <div class="row d-flex justify-content-center my-4">
             <div class="col-md-8">
                 <div class="row">
                     {% for category in categories %}
-                        <div class="col-md-6 d-flex bd-highlight my-1 rounded-sm bg-white category"
-                             onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
-                            <div class="p-2 bd-highlight border">
+                        <div class="col-md-6 d-flex bd-highlight my-1 rounded-sm">
+                            <div class="category p-2 bd-highlight border bg-white rounded" onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
                                 <img src="{{ asset('uploads/category/'~category.photo) }}" alt="{{ category.name }}"
                                      width="100%">
                                 <hr>
@@ -35,9 +34,9 @@
             <div class="col-md-4">
                 <div class="border my-2">
                     <div class="p-2" style="background-color: #b3b7bb; color: white">
-                        <strong>Carrito de compras</strong> - <a href="{{ path('shopping_car') }}">Confirmar Pedido</a>
+                        <strong>Carrito de compras</strong> - <a href="{{ path('shopping_car') }}"><small>Confirmar Pedido</small></a>
                     </div>
-                    <div id="shopping_car" style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
+                    <div id="shopping_car" class="bg-white" style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
                         {% if order is not null %}
                             {% for productorder in order.productOrders %}
                                 {% set product = productorder.product %}
@@ -62,7 +61,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="border p-5 my-4 text-center">
+                <div class="border p-5 my-4 text-center bg-white">
                     <img src="{{ asset('assets/images/logo2.png') }}" alt="logo" width="100%">
                 </div>
             </div>

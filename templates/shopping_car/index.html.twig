@@ -17,11 +17,11 @@
                         {% for order in order.productOrders %}
                             {% set product = order.product %}
                             {% set subtotal = (order.cantidad * product.price) %}
-                            <div class="col-md-3 p-3 my-2 border">
+                            <div class="col-md-3 p-3 my-2 border bg-white">
                                 <img class="rounded" src="{{ asset('uploads/product/'~product.photo) }}"
                                      alt="{{ product.name }}" width="100%">
                             </div>
-                            <div class="col-md-9 p-3 my-2 border">
+                            <div class="col-md-9 p-3 my-2 border bg-white">
                                 <h5>{{ product.name }}</h5>
                                 <div>Precio Unidad: ${{ product.price }}</div>
                                 <div>Cantidad: {{ order.cantidad }}</div>
