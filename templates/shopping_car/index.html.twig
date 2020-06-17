@@ -58,17 +58,25 @@
                 <div>
                     {% if total_ammount %}
                         {{ form_start(form) }}
-                        <div class="row container">
-                            <div class="col-md-12 my-2"></div>
-                            {{ form_widget(form.paymentMethod, { 'attr': {'class': 'foo'} }) }}
+                        <div class="row">
                             <div class="col-md-12 my-2">
-                                {{ form_widget(form.totalValue, { 'attr': {'value': total_ammount, 'disabled':true} }) }}
+                                {{ form_widget(form.paymentMethod, { 'attr': {'class': 'foo'} }) }}
+                            </div>
+                            <div id="message" class="col-md-12 my-2" style="display: none">
+                                <div class="alert alert-warning">
+                                    Pagas cuando recibes. El domiciliario cumple con las medidas de
+                                    bioseguridad.
+                                </div>
+                            </div>
+                            <div id="send" class="col-md-12 my-2" style="display: none">
+                                {{ form_widget(form.save, {'attr':{'class':'btn btn-success btn-block'}}) }}
                             </div>
                         </div>
                         {{ form_end(form) }}
                     {% else %}
                         <div class="alert alert-info">
-                            ¿Un poco perdido? da click <a href="{{ path('category_index') }}">Aquí</a> y empieza  a comprar!
+                            ¿Un poco perdido? da click <a href="{{ path('category_index') }}">Aquí</a> y empieza a
+                            comprar!
                         </div>
                     {% endif %}
                 </div>

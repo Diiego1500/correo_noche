@@ -21,8 +21,7 @@ class OrderType extends AbstractType
                     'choices'=>Order::PAYMENT_METHOD
                 ]
             )
-            ->add('totalValue', IntegerType::class)
-            ->add('save', SubmitType::class)
+            ->add('save', SubmitType::class, ['label'=>'Confirmar compra'])
         ;
     }
 

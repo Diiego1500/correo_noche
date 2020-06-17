@@ -22,3 +22,16 @@ function incorrect_ammount() {
         text: 'Por favor introduzca un valor válido'
     })
 }
+
+$('#order_paymentMethod').change(function () {
+    var selected = this.value;
+    if(selected == 'Efectivo' || selected == 'Datafono'){
+        $('#message').show();
+        $('#send').show();
+    }
+    else{
+        $('#message').hide();
+        $('#send').hide();
+    }
+
+})
