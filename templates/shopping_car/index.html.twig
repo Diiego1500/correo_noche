@@ -62,15 +62,44 @@
                             <div class="col-md-12 my-2">
                                 {{ form_widget(form.paymentMethod, { 'attr': {'class': 'foo'} }) }}
                             </div>
+                            <div id="send" class="col-md-12 my-2" style="display: none">
+                                {{ form_widget(form.save, {'attr':{'class':'btn btn-success btn-block'}}) }}
+                            </div>
+                            <div id="epayco" class="col-md-12 text-center" style="display: none">
+                                <form>
+                                    <script
+                                            src="https://checkout.epayco.co/checkout.js"
+                                            class="epayco-button"
+                                            data-epayco-key="5ea105d3f0eb3a32017d3dd96257c5d4"
+                                            data-epayco-amount="{{ total_ammount }}"
+                                            data-epayco-name="El Correo de la noche"
+                                            data-epayco-description="Bebidas y Snacks"
+                                            data-epayco-currency="cop"
+                                            data-epayco-country="co"
+                                            data-epayco-test="true"
+                                            data-epayco-external="false"
+                                            data-epayco-response="{{path('category_index')}}"
+                                            data-epayco-confirmation=""
+                                            data-epayco-address-billing="{{ user.address }}"
+                                            data-epayco-email-billing="{{ user.email }}"
+                                            data-epayco-name-billing="{{ user.name }} {{ user.lastname }}"
+                                            data-epayco-mobilephone-billing="{{ user.phone }}"
+                                    >
+                                    </script>
+                                </form>
+                            </div>
                             <div id="message" class="col-md-12 my-2" style="display: none">
                                 <div class="alert alert-warning">
                                     Pagas cuando recibes. El domiciliario cumple con las medidas de
                                     bioseguridad.
                                 </div>
                             </div>
-                            <div id="send" class="col-md-12 my-2" style="display: none">
-                                {{ form_widget(form.save, {'attr':{'class':'btn btn-success btn-block'}}) }}
+                            <div id="messageEpayco" class="col-md-12 my-2" style="display: none">
+                                <div class="alert alert-warning">
+                                    Para pagar en linea el monto minimo de transacción es de $5.000 COP
+                                </div>
                             </div>
+
                         </div>
                         {{ form_end(form) }}
                     {% else %}

@@ -28,9 +28,21 @@ $('#order_paymentMethod').change(function () {
     if(selected == 'Efectivo' || selected == 'Datafono'){
         $('#message').show();
         $('#send').show();
+        $('#epayco').hide();
+        $('#messageEpayco').hide();
     }else{
-        $('#message').hide();
-        $('#send').hide();
+        if(selected == 'Pago en linea'){
+            $('#message').hide();
+            $('#send').hide();
+            $('#epayco').show();
+            $('#messageEpayco').show();
+        }else{
+            $('#message').hide();
+            $('#send').hide();
+            $('#epayco').hide();
+            $('#messageEpayco').hide();
+        }
+
     }
 
 })

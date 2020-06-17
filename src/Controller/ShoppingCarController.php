@@ -46,7 +46,8 @@ class ShoppingCarController extends AbstractController
 
         return $this->render('shopping_car/index.html.twig', [
             'order' => $order,
-            'form'=>$form->createView()
+            'form'=>$form->createView(),
+            'user'=>$user
         ]);
     }
 
