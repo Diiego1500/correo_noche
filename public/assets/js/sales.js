@@ -28,8 +28,7 @@ $('#order_paymentMethod').change(function () {
     if(selected == 'Efectivo' || selected == 'Datafono'){
         $('#message').show();
         $('#send').show();
-    }
-    else{
+    }else{
         $('#message').hide();
         $('#send').hide();
     }
