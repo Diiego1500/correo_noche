@@ -77,4 +77,42 @@ class SecurityController extends AbstractController
         }
         return $this->render('security/register.html.twig', ['registerForm'=>$registerForm->createView()]);
     }
+
+
+    /**
+     * @Route("/register/admin/666", name="app_register_admin")
+     */
+    public function regiter_admin(Request $request, UserPasswordEncoderInterface $passwordEncoder, SluggerInterface $slugger){
+        $newUser = new User();
+        $registerForm = $this->createForm(UserType::class, $newUser);
+        $registerForm->handleRequest($request);
+        if($registerForm->isSubmitted() && $registerForm->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $password = $registerForm->get('password')->getData();
+            $newUser->setPassword($passwordEncoder->encodePassword($newUser, $password));
+            $photo = $registerForm->get('photo')->getData();
+            if($photo){
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photo->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $photo->move(
+                        $this->getParameter('photos_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    throw new \Exception('Hubo un error con tu foto');
+                }
+                $newUser->setPhoto($newFilename);
+            }
+            $newUser->setRoles(['ROLE_ADMIN']);
+            $em->persist($newUser);
+            $em->flush();
+            return $this->redirectToRoute('app_login');
+        }
+        return $this->render('security/register.html.twig', ['registerForm'=>$registerForm->createView()]);
+    }
 }
