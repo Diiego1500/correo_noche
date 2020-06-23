@@ -23,8 +23,8 @@ class ShoppingCarController extends AbstractController
         $user = $this->getUser();
         $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
         $form = $this->createForm(OrderType::class, $order);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $paymentMethod = $form->get('paymentMethod')->getData();
             $total_ammount = 0;
@@ -39,7 +39,7 @@ class ShoppingCarController extends AbstractController
             $order->setTotalValue($total_ammount);
             $order->setRealizationDate(new \DateTime());
             $em->flush();
-            return $this->redirectToRoute('client_sales',['hash'=>$user->getHash()]);
+            return $this->redirectToRoute('client_sales', ['hash'=>$user->getHash()]);
 
         }
 

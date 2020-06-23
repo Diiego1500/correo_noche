@@ -65,6 +65,18 @@
                             <div id="send" class="col-md-12 my-2" style="display: none">
                                 {{ form_widget(form.save, {'attr':{'class':'btn btn-success btn-block'}}) }}
                             </div>
+
+                            <div id="message" class="col-md-12 my-2" style="display: none">
+                                <div class="alert alert-warning">
+                                    Pagas cuando recibes. El domiciliario cumple con las medidas de
+                                    bioseguridad.
+                                </div>
+                            </div>
+
+
+                        </div>
+                        {{ form_end(form) }}
+                        <div class="row">
                             <div id="epayco" class="col-md-12 text-center" style="display: none">
                                 <form>
                                     <script
@@ -78,7 +90,7 @@
                                             data-epayco-country="co"
                                             data-epayco-test="true"
                                             data-epayco-external="false"
-                                            data-epayco-response="{{path('category_index')}}"
+                                            data-epayco-response="{{ path('category_index') }}"
                                             data-epayco-confirmation=""
                                             data-epayco-address-billing="{{ user.address }}"
                                             data-epayco-email-billing="{{ user.email }}"
@@ -89,20 +101,12 @@
                                     </script>
                                 </form>
                             </div>
-                            <div id="message" class="col-md-12 my-2" style="display: none">
-                                <div class="alert alert-warning">
-                                    Pagas cuando recibes. El domiciliario cumple con las medidas de
-                                    bioseguridad.
-                                </div>
-                            </div>
                             <div id="messageEpayco" class="col-md-12 my-2" style="display: none">
                                 <div class="alert alert-warning">
                                     Para pagar en linea el monto minimo de transacción es de $5.000 COP
                                 </div>
                             </div>
-
                         </div>
-                        {{ form_end(form) }}
                     {% else %}
                         <div class="alert alert-info">
                             ¿Un poco perdido? da click <a href="{{ path('category_index') }}">Aquí</a> y empieza a
