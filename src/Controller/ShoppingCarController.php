@@ -149,7 +149,7 @@ class ShoppingCarController extends AbstractController
      * @Route("/epayco/success/", name="epayco_success")
      */
     public function EpaycoSuccess(Request $request){
-
+        $em = $this->getDoctrine()->getManager();
         $p_cust_id_cliente = '80247';
         $p_key             = '1d83674120c9afc3f2bc0244c1fb4f5702991755';
         $x_ref_payco      = $request->request->get('x_ref_payco');
@@ -173,9 +173,20 @@ class ShoppingCarController extends AbstractController
             /*Si la firma esta bien podemos verificar los estado de la transacción*/
             $x_cod_response = $request->request->get('x_cod_response');
             switch ((int) $x_cod_response) {
-                case 1:
-                    # code transacción aceptada
-                    echo "transacción aceptada";
+                case 1: # code transacción aceptada
+                    $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
+                    $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
+                    $total_ammount = 0;
+                    foreach ($order->getProductOrders() as $productorder){
+                        $product = $productorder->getProduct();
+                        $subtotal = $product->getPrice() * $productorder->getCantidad();
+                        $total_ammount += $subtotal;
+                    }
+                    $order->setPaymentMethod(Order::PAYMENT_METHOD[2]); //PAGO EN LINEA
+                    $order->setStatus(Order::STATUS[2]);
+                    $order->setTotalValue($total_ammount);
+                    $order->setRealizationDate(new \DateTime());
+                    $em->flush();
                     break;
                 case 2:
                     # code transacción rechazada
