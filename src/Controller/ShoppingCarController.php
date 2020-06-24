@@ -166,6 +166,7 @@ class ShoppingCarController extends AbstractController
         $x_motivo       = $request->request->get('x_response_reason_text');
         $x_id_invoice   = $request->request->get('x_id_invoice');
         $x_autorizacion = $request->request->get('x_approval_code');
+        $x_customer_email = $request->request->get('x_customer_email');
 
 //Validamos la firma
         if ($x_signature == $signature) {
@@ -193,7 +194,7 @@ class ShoppingCarController extends AbstractController
         } else {
             die("Firma no valida");
         }
-        return new JsonResponse(['ammount'=>$x_amount]);
+        return new JsonResponse(['x_customer_email'=>$x_customer_email]);
     }
 
 }
