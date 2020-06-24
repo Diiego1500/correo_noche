@@ -158,8 +158,6 @@ class ShoppingCarController extends AbstractController
         $x_currency_code  = $request->request->get('x_currency_code');
         $x_signature      = $request->request->get('x_signature');
 
-
-
         $signature = hash('sha256', $p_cust_id_cliente . '^' . $p_key . '^' . $x_ref_payco . '^' . $x_transaction_id . '^' . $x_amount . '^' . $x_currency_code);
 
         $x_response     = $request->request->get('x_response');
@@ -167,8 +165,7 @@ class ShoppingCarController extends AbstractController
         $x_id_invoice   = $request->request->get('x_id_invoice');
         $x_autorizacion = $request->request->get('x_approval_code');
         $x_customer_email = $request->request->get('x_customer_email');
-
-//Validamos la firma
+        //Validamos la firma
         if ($x_signature == $signature) {
             /*Si la firma esta bien podemos verificar los estado de la transacción*/
             $x_cod_response = $request->request->get('x_cod_response');
@@ -176,31 +173,12 @@ class ShoppingCarController extends AbstractController
                 case 1: # code transacción aceptada
                     $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
                     $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
-                    $total_ammount = 0;
-                    foreach ($order->getProductOrders() as $productorder){
-                        $product = $productorder->getProduct();
-                        $subtotal = $product->getPrice() * $productorder->getCantidad();
-                        $total_ammount += $subtotal;
-                    }
                     $order->setPaymentMethod(Order::PAYMENT_METHOD[2]); //PAGO EN LINEA
                     $order->setStatus(Order::STATUS[2]);
-                    $order->setTotalValue($total_ammount);
+                    $order->setTotalValue($x_amount);
                     $order->setRealizationDate(new \DateTime());
                     $em->flush();
                     break;
-                case 2:
-                    # code transacción rechazada
-                    echo "transacción rechazada";
-                    break;
-                case 3:
-                    # code transacción pendiente
-                    echo "transacción pendiente";
-                    break;
-                case 4:
-                    # code transacción fallida
-                    echo "transacción fallida";
-                    break;
-
             }
         } else {
             die("Firma no valida");
