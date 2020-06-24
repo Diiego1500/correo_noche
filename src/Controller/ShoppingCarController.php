@@ -175,7 +175,7 @@ class ShoppingCarController extends AbstractController
 //        $order->setRealizationDate(new \DateTime());
 //        $em->flush();
 
-        if ($x_signature == $signature) {
+//        if ($x_signature == $signature) {
 //            /*Si la firma esta bien podemos verificar los estado de la transacción*/
 //            $x_cod_response = $request->request->get('x_cod_response');
 //            switch ((int) $x_cod_response) {
@@ -189,9 +189,9 @@ class ShoppingCarController extends AbstractController
 //                    $em->flush();
 //                    break;
 //            }
-        } else {
-            die("Firma no valida");
-        }
+//        } else {
+//            die("Firma no valida");
+//        }
         return new JsonResponse(['x_customer_email'=>$x_customer_email]);
     }
 
