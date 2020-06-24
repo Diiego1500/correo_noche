@@ -90,8 +90,8 @@
                                             data-epayco-country="co"
                                             data-epayco-test="true"
                                             data-epayco-external="false"
-                                            data-epayco-response="{{ path('category_index') }}"
-                                            data-epayco-confirmation=""
+                                            data-epayco-response="{{ path('category_index') }}" {# ve el cliente #}
+                                            data-epayco-confirmation="{{ path('epayco_success') }}" {# veo yo #}
                                             data-epayco-address-billing="{{ user.address }}"
                                             data-epayco-email-billing="{{ user.email }}"
                                             data-epayco-name-billing="{{ user.name }} {{ user.lastname }}"
