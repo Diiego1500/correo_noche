@@ -146,7 +146,7 @@ class ShoppingCarController extends AbstractController
 
 
     /**
-     * @Route("/epayco/success/", name="epayco_success")
+     * @Route("/epayco/success/", name="epayco_success", methods={"POST"})
      */
     public function EpaycoSuccess(Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -196,7 +196,7 @@ class ShoppingCarController extends AbstractController
 //        } else {
 //            die("Firma no valida");
 //        }
-        return new JsonResponse(['email'=>$json['x_customer_email']]);
+        return new JsonResponse(['email'=>$x_signature]);
     }
 
 }
