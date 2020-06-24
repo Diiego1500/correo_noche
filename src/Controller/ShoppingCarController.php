@@ -166,14 +166,16 @@ class ShoppingCarController extends AbstractController
         $x_autorizacion = $request->request->get('x_approval_code');
         $x_customer_email = $request->request->get('x_customer_email');
         //Validamos la firma
+
+        $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
+        $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
+        $order->setPaymentMethod(Order::PAYMENT_METHOD[2]); //PAGO EN LINEA
+        $order->setStatus(Order::STATUS[2]);
+        $order->setTotalValue($x_amount);
+        $order->setRealizationDate(new \DateTime());
+        $em->flush();
+
         if ($x_signature == $signature) {
-            $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
-            $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
-            $order->setPaymentMethod(Order::PAYMENT_METHOD[2]); //PAGO EN LINEA
-            $order->setStatus(Order::STATUS[2]);
-            $order->setTotalValue($x_amount);
-            $order->setRealizationDate(new \DateTime());
-            $em->flush();
 //            /*Si la firma esta bien podemos verificar los estado de la transacción*/
 //            $x_cod_response = $request->request->get('x_cod_response');
 //            switch ((int) $x_cod_response) {
