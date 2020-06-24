@@ -196,7 +196,7 @@ class ShoppingCarController extends AbstractController
 //        } else {
 //            die("Firma no valida");
 //        }
-        return new JsonResponse(['x_customer_email'=>$data['x_customer_email'], 'email'=>$json['x_customer_email']]);
+        return new JsonResponse(['email'=>$json['x_customer_email']]);
     }
 
 }
