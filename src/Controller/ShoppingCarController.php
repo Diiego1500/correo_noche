@@ -169,7 +169,7 @@ class ShoppingCarController extends AbstractController
 
         $user = $em->getRepository(User::class)->findOneBy(['email'=>'admin@hotmail.com']);
         $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
-        $order->setPaymentMethod(Order::PAYMENT_METHOD[2]); //PAGO EN LINEA
+        $order->setPaymentMethod('Pago en linea'); //PAGO EN LINEA
         $order->setStatus(Order::STATUS[2]);
         $order->setTotalValue($x_amount);
         $order->setRealizationDate(new \DateTime());
