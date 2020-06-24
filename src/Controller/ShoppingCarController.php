@@ -146,7 +146,7 @@ class ShoppingCarController extends AbstractController
 
 
     /**
-     * @Route("/epayco/success/", name="epayco_success", methods={"POST"})
+     * @Route("/epayco/success/", name="epayco_success")
      */
     public function EpaycoSuccess(Request $request){
         $em = $this->getDoctrine()->getManager();
