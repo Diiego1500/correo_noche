@@ -154,6 +154,7 @@ class ShoppingCarController extends AbstractController
         $p_key             = '1d83674120c9afc3f2bc0244c1fb4f5702991755';
 
         $data = $request->getContent();
+        $json = json_decode($request->getContent(), true);
 
         $x_ref_payco      = $request->request->get('x_ref_payco');
         $x_transaction_id = $request->request->get('x_transaction_id');
@@ -195,7 +196,7 @@ class ShoppingCarController extends AbstractController
 //        } else {
 //            die("Firma no valida");
 //        }
-        return new JsonResponse(['x_customer_email'=>$data]);
+        return new JsonResponse(['x_customer_email'=>$data['x_customer_email'], 'email'=>$json['x_customer_email']]);
     }
 
 }
