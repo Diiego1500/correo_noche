@@ -144,4 +144,12 @@ class ShoppingCarController extends AbstractController
         return $this->redirectToRoute('clients_sales', ['search'=>'recents']);
     }
 
+
+    /**
+     * @Route("/epayco/success/", name="epayco_success")
+     */
+    public function EpaycoSuccess(){
+        return $this->render('shopping_car/epayco_success.html.twig');
+    }
+
 }
