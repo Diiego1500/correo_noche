@@ -188,7 +188,7 @@ class ShoppingCarController extends AbstractController
         } else {
             die("Firma no valida");
         }
-        return new JsonResponse(['order'=>$user->getId()]);
+        return new JsonResponse(['usuario'=>$user->getName()]);
     }
 
 }
