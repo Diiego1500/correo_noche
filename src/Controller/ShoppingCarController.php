@@ -152,6 +152,9 @@ class ShoppingCarController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $p_cust_id_cliente = '80247';
         $p_key             = '1d83674120c9afc3f2bc0244c1fb4f5702991755';
+
+        $data = $request->getContent();
+
         $x_ref_payco      = $request->request->get('x_ref_payco');
         $x_transaction_id = $request->request->get('x_transaction_id');
         $x_amount         = $request->request->get('x_amount');
@@ -192,7 +195,7 @@ class ShoppingCarController extends AbstractController
 //        } else {
 //            die("Firma no valida");
 //        }
-        return new JsonResponse(['x_customer_email'=>$x_customer_email]);
+        return new JsonResponse(['x_customer_email'=>$data]);
     }
 
 }
