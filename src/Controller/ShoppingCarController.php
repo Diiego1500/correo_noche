@@ -167,7 +167,7 @@ class ShoppingCarController extends AbstractController
         $x_customer_email = $request->request->get('x_customer_email');
         //Validamos la firma
 
-        $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
+        $user = $em->getRepository(User::class)->findOneBy(['email'=>'admin@hotmail.com']);
         $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
         $order->setPaymentMethod(Order::PAYMENT_METHOD[2]); //PAGO EN LINEA
         $order->setStatus(Order::STATUS[2]);
