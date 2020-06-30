@@ -215,6 +215,8 @@ class ShoppingCarController extends AbstractController
             die("Firma no valida");
         }
 
+        return new JsonResponse(['response'=>'Finalizada']);
+
     }
 
 }
