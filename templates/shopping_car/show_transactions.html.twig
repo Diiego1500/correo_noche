@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello ShoppingCarController!{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>x_cust_id_cliente</th>
+                <th>x_ref_payco</th>
+                <th>x_description</th>
+                <th>x_amount</th>
+                <th>x_respuesta</th>
+                <th>x_fecha_transaccion</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.xcustidcliente }}</td>
+                    <td>{{ transaction.xrefpayco }}</td>
+                    <td>{{ transaction.xdescription }}</td>
+                    <td>{{ transaction.xamount }}</td>
+                    <td>{{ transaction.xrespuesta }}</td>
+                    <td>{{ transaction.xfechatransaccion }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

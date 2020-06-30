@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\EpaycoTransaction;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\ProductOrder;
@@ -144,6 +145,15 @@ class ShoppingCarController extends AbstractController
         return $this->redirectToRoute('clients_sales', ['search'=>'recents']);
     }
 
+    /**
+     *  @Route("/show/transactions/epayco/", name="show_transactions")
+     */
+    public function ShowTransactions(){
+        $em = $this->getDoctrine()->getManager();
+        $transactions = $em->getRepository(EpaycoTransaction::class)->findAll();
+        return $this->render('shopping_car/show_transactions.html.twig',['transactions'=>$transactions]);
+    }
+
 
     /**
      * @Route("/epayco/success/", name="epayco_success")
@@ -153,42 +163,58 @@ class ShoppingCarController extends AbstractController
         $p_cust_id_cliente = '80247';
         $p_key             = '1d83674120c9afc3f2bc0244c1fb4f5702991755';
 
-        $data = $request->getContent();
-        $json = json_decode($request->getContent(), true);
-        $x_ref_payco_2 = $request->get('x_ref_payco');
-        $x_ref_payco      = $request->request->get('x_ref_payco');
-        $x_transaction_id = $request->request->get('x_transaction_id');
-        $x_amount         = $request->request->get('x_amount');
-        $x_currency_code  = $request->request->get('x_currency_code');
-        $x_signature      = $request->request->get('x_signature');
+        $x_ref_payco      = $_REQUEST['x_ref_payco'];
+        $x_transaction_id = $_REQUEST['x_transaction_id'];
+        $x_amount         = $_REQUEST['x_amount'];
+        $x_currency_code  = $_REQUEST['x_currency_code'];
+        $x_signature      = $_REQUEST['x_signature'];
 
         $signature = hash('sha256', $p_cust_id_cliente . '^' . $p_key . '^' . $x_ref_payco . '^' . $x_transaction_id . '^' . $x_amount . '^' . $x_currency_code);
 
-        $x_response     = $request->request->get('x_response');
-        $x_motivo       = $request->request->get('x_response_reason_text');
-        $x_id_invoice   = $request->request->get('x_id_invoice');
-        $x_autorizacion = $request->request->get('x_approval_code');
-        $x_customer_email = $request->request->get('x_customer_email');
-        //Validamos la firma
+        $x_response     = $_REQUEST['x_response'];
+        $x_motivo       = $_REQUEST['x_response_reason_text'];
+        $x_id_invoice   = $_REQUEST['x_id_invoice'];
+        $x_autorizacion = $_REQUEST['x_approval_code'];
+        //====================================================
+        $x_cust_id_cliente = $_REQUEST['x_cust_id_cliente'];
+        $x_ref_payco = $_REQUEST['x_ref_payco'];
+        $x_id_factura = $_REQUEST['x_id_factura'];
+        $x_id_invoice = $_REQUEST['x_id_invoice'];
+        $x_description = $_REQUEST['x_description'];
+        $x_amount = $_REQUEST['x_amount'];
+        $x_respuesta = $_REQUEST['x_respuesta'];
+        $x_fecha_transaccion = $_REQUEST['x_fecha_transaccion'];
 
+
+        //Validamos la firma
         if ($x_signature == $signature) {
             /*Si la firma esta bien podemos verificar los estado de la transacción*/
-            $x_cod_response = $request->request->get('x_cod_response');
+            $x_cod_response = $_REQUEST['x_cod_response'];
             switch ((int) $x_cod_response) {
-                case 1: # code transacción aceptada
-                    $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
-                    $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
-                    $order->setPaymentMethod('Pago en linea'); //PAGO EN LINEA
-                    $order->setStatus(Order::STATUS[2]);
-                    $order->setTotalValue($x_amount);
-                    $order->setRealizationDate(new \DateTime());
+                case 1:
+                    $em = $this->getDoctrine()->getManager();
+                    $epayco_transaction = new EpaycoTransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
+                    $em->persist($epayco_transaction);
                     $em->flush();
                     break;
+                case 2:
+                    # code transacción rechazada
+                    echo "transacción rechazada";
+                    break;
+                case 3:
+                    # code transacción pendiente
+                    echo "transacción pendiente";
+                    break;
+                case 4:
+                    # code transacción fallida
+                    echo "transacción fallida";
+                    break;
+
             }
         } else {
             die("Firma no valida");
         }
-        return new JsonResponse(['usuario'=>$user->getName()]);
+
     }
 
 }
