@@ -38,7 +38,7 @@ class UserType extends AbstractType
                 ]
             )
             ->add('password')
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, ['label'=>'¡Registrarse!'])
         ;
     }
 
