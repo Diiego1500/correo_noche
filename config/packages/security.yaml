@@ -50,4 +50,5 @@ security:
         - { path: /shopping/car/sales, roles: ROLE_ADMIN }
         - { path: /shopping/car, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: /product, roles: ROLE_ADMIN }
+        - { path: /show/transactions/epayco, roles: ROLE_ADMIN }
 

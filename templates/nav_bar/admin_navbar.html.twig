@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-light">
     <div class="container">
         <a class="navbar-brand" href="{{ path('category_index') }}"><i class="fas fa-home"></i> Inicio</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -8,22 +8,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('product_index') }}"><i class="fab fa-product-hunt"></i> Productos  | </a>
+                    <a class="nav-link" href="{{ path('product_index') }}"><i class="fab fa-product-hunt"></i> <strong>Productos</strong>  | </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('clients_sales',{search:'recents'}) }}"><i class="fas fa-dollar-sign"></i> Mis Ventas |</a>
+                    <a class="nav-link" href="{{ path('clients_sales',{search:'recents'}) }}"><i class="fas fa-dollar-sign"></i> <strong>Mis Ventas</strong> |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('users') }}"><i class="fas fa-users"></i> Usuarios |</a>
+                    <a class="nav-link" href="{{ path('users') }}"><i class="fas fa-users"></i> <strong>Usuarios</strong> |</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('show_transactions') }}"><i class="fas fa-exchange-alt"></i> Transacciones |  </a>
+                    <a class="nav-link" href="{{ path('show_transactions') }}"><i class="fas fa-exchange-alt"></i> <strong>Transacciones</strong> |  </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('city_index') }}"><i class="fas fa-city"></i> Ciudades |  </a>
+                    <a class="nav-link" href="{{ path('city_index') }}"><i class="fas fa-city"></i> <strong>Ciudades</strong> |  </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> Salir</a>
+                    <a class="nav-link" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i> <strong>Salir</strong></a>
                 </li>
             </ul>
         </div>

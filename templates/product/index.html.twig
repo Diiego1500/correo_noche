@@ -3,7 +3,7 @@
 {% block body %}
     {{ parent() }}
     <div class="container">
-        <a href="{{ path('product_new') }}">Create new</a>
+        <a class="btn btn-success btn-block my-3" href="{{ path('product_new') }}"><i class="fa fa-plus"></i> Crear producto</a>
         <div class="container">
             <div class="row d-flex justify-content-center my-4">
                 {% for product in products %}
