@@ -7,8 +7,8 @@
         <div class="container">
             <div class="row d-flex justify-content-center my-4">
                 {% for product in products %}
-                    <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm bg-white category">
-                        <div class="p-2 bd-highlight border">
+                    <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm  category">
+                        <div class="p-2 bd-highlight border bg-white">
                             <img src="{{ asset('uploads/product/'~product.photo) }}" alt="{{ product.name }}" width="100%">
                             <hr>
                             <h4>{{ product.name }}</h4>

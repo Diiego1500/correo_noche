@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit City{% endblock %}
+{% block title %}Editar Ciudad{% endblock %}
 
 {% block body %}
     {{ parent() }}
-    <h1>Edit City</h1>
+    <div class="container">
+        <h1>Editar ciudad</h1>
 
-    {{ include('city/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('city/_form.html.twig', {'button_label': 'Actualizar'}) }}
 
-    <a href="{{ path('city_index') }}">back to list</a>
+        <a class="btn btn-info btn-block" href="{{ path('city_index') }}">Regresar a la lista</a>
 
-    {{ include('city/_delete_form.html.twig') }}
+        {{ include('city/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
