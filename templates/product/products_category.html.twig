@@ -21,6 +21,7 @@
                                 <hr>
                                 <button class="btn btn-success btn-block add_car" data-id="{{ product.id }}"
                                         data-hash="{{ app.user.hash }}">
+                                    <i class="fas fa-shopping-cart"></i>
                                     Agregar al carrito
                                 </button>
                             </div>
@@ -55,7 +56,7 @@
                             {% endfor %}
                         {% else %}
                             <div class="p-2" id="not_added">
-                                <div class="alert alert-danger ">No ha agregado productos al carrito</div>
+                                <div class="alert alert-danger "><i class="fas fa-exclamation-triangle"></i> No ha agregado productos al carrito</div>
                             </div>
                         {% endif %}
                     </div>

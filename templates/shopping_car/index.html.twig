@@ -9,10 +9,11 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <div class="row my-2">
+        <div class="row my-4">
             <div class="col-md-8">
-                <h5 class="my-2">Mi orden</h5>
+                <div class="col-md-12 bg-info">Mi orden</div>
                 <div class="row" style="height: 500px; overflow-y: scroll; overflow-x: hidden;">
+
                     {% if order is not null %}
                         {% for order in order.productOrders %}
                             {% set product = order.product %}

@@ -184,30 +184,46 @@ class ShoppingCarController extends AbstractController
         $x_amount = $_REQUEST['x_amount'];
         $x_respuesta = $_REQUEST['x_respuesta'];
         $x_fecha_transaccion = $_REQUEST['x_fecha_transaccion'];
+        $x_customer_email = $_REQUEST['x_customer_email'];
 
 
         //Validamos la firma
         if ($x_signature == $signature) {
             /*Si la firma esta bien podemos verificar los estado de la transacción*/
             $x_cod_response = $_REQUEST['x_cod_response'];
+
             switch ((int) $x_cod_response) {
                 case 1:
-                    $em = $this->getDoctrine()->getManager();
-                    $epayco_transaction = new EpaycoTransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
-                    $em->persist($epayco_transaction);
-                    $em->flush();
+                    # code transacción aceptada
+                    $this->savetransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
+                    $user = $em->getRepository(User::class)->findOneBy(['email'=>$x_customer_email]);
+                    $order = $em->getRepository(Order::class)->findOneBy(['user'=>$user, 'status'=>Order::STATUS[1]]);
+                    $total_ammount = 0;
+                    foreach ($order->getProductOrders() as $productorder){
+                        $product = $productorder->getProduct();
+                        $subtotal = $product->getPrice() * $productorder->getCantidad();
+                        $total_ammount += $subtotal;
+                    }
+                    if($total_ammount >= $x_amount){
+                        $order->setPaymentMethod('Pago en Linea Con Epayco');
+                        $order->setStatus(Order::STATUS[2]);
+                        $order->setTotalValue($x_amount);
+                        $order->setRealizationDate(new \DateTime());
+                        $em->flush();
+                    }
                     break;
                 case 2:
                     # code transacción rechazada
-                    echo "transacción rechazada";
+
+                    $this->savetransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
                     break;
                 case 3:
                     # code transacción pendiente
-                    echo "transacción pendiente";
+                    $this->savetransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
                     break;
                 case 4:
                     # code transacción fallida
-                    echo "transacción fallida";
+                    $this->savetransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
                     break;
 
             }
@@ -219,4 +235,11 @@ class ShoppingCarController extends AbstractController
 
     }
 
+
+    public function savetransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion){
+        $em = $this->getDoctrine()->getManager();
+        $epayco_transaction = new EpaycoTransaction($x_cust_id_cliente,$x_ref_payco,$x_id_factura,$x_id_invoice,$x_description,$x_amount,$x_respuesta,$x_fecha_transaccion);
+        $em->persist($epayco_transaction);
+        $em->flush();
+    }
 }
