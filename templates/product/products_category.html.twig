@@ -36,8 +36,8 @@
             </div>
             <div class="col-md-4">
                 <div class="border my-2">
-                    <div class="p-2" style="background-color: #b3b7bb; color: white">
-                        <strong>Carrito de compras</strong> - <a href="{{ path('shopping_car') }}">Confirmar Pedido</a>
+                    <div class="p-2 rounded-top" style="background-color: #563d7c; color: white">
+                        <strong>Carrito de compras</strong> - <a href="{{ path('shopping_car') }}"><small>Confirmar Pedido</small></a>
                     </div>
                     <div id="shopping_car"  class="bg-white" style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
                         {% if order is not null %}
@@ -59,7 +59,14 @@
                             {% endfor %}
                         {% else %}
                             <div class="p-2" id="not_added">
-                                <div class="alert alert-danger "><i class="fas fa-exclamation-triangle"></i> No ha agregado productos al carrito</div>
+                                <div class="alert alert-warning ">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <small>
+                                        No ha agregado productos al carrito
+                                        <hr>
+                                        Aquí se verán los productos agregados al carrito de compras
+                                    </small>
+                                </div>
                             </div>
                         {% endif %}
                     </div>
