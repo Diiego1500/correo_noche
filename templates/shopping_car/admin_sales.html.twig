@@ -29,6 +29,14 @@
                         <div>Compra Realizada el:
                             <strong>{{ order.realizationdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong>
                         </div>
+                        {% if order.productdiscount == true %}
+                            <div style="color: green">
+                                <small>
+                                    <i class="fas fa-star"></i>
+                                    <strong>Venta con descuento</strong>
+                                </small>
+                            </div>
+                        {% endif %}
                         {% if order.dispatchdate is not null %}
                             <div>Compra Despachada el:
                                 <strong>{{ order.dispatchdate|localizeddate('none', 'none', 'es_CO', null, "cccc, d MMMM Y") }}</strong>

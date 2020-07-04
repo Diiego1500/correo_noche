@@ -13,7 +13,8 @@
                 <div class="row">
                     {% for category in categories %}
                         <div class="col-md-6 d-flex bd-highlight my-1 rounded-sm">
-                            <div class="category p-2 bd-highlight border bg-white rounded" onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
+                            <div class="category p-2 bd-highlight border bg-white rounded"
+                                 onclick="location.href='{{ path('products_category',{id:category.id}) }}'">
                                 <img src="{{ asset('uploads/category/'~category.photo) }}" alt="{{ category.name }}"
                                      width="100%">
                                 <hr>
@@ -34,21 +35,32 @@
             <div class="col-md-4">
                 <div class="border my-2">
                     <div class="p-2 rounded-top" style="background-color: #563d7c; color: white">
-                        <strong>Carrito de compras</strong> - <a href="{{ path('shopping_car') }}"><small>Confirmar Pedido</small></a>
+                        <strong><i class="fas fa-shopping-cart"></i> Carrito de compras</strong> - <a href="{{ path('shopping_car') }}"
+                                                                 style="color: whitesmoke">
+                            <small><i><u>Confirmar Pedido</u></i></small>
+                        </a>
                     </div>
-                    <div id="shopping_car" class="bg-white" style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
+                    <div id="shopping_car" class="bg-white"
+                         style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
                         {% if order is not null %}
                             {% for productorder in order.productOrders %}
                                 {% set product = productorder.product %}
                                 <div class="p-2">
                                     <div class="p-1 rounded border">
                                         <h6>{{ product.name }}</h6>
+                                        {% if product.discount %}
+                                            <div style="color: green">
+                                                <small><i class="fas fa-star"></i>
+                                                    <strong>{{ product.discount }}% de descuento</strong>
+                                                </small>
+                                            </div>
+                                        {% endif %}
                                         <div><small>Precio Unidad: ${{ product.price }}</small></div>
                                         <div class="row">
                                             <div class="col-md-6"><small>Cantidad: {{ productorder.cantidad }}</small>
                                             </div>
                                             <div class="col-md-6 text-right">
-                                                <small><strong>SubTotal: {{ product.price * productorder.cantidad }}</strong></small>
+                                                <small><strong>SubTotal: {{ (product.price * productorder.cantidad) - (((product.price * productorder.cantidad) * product.discount) / 100) }}</strong></small>
                                             </div>
                                         </div>
                                     </div>

@@ -55,6 +55,17 @@ class Order
     private $dispatch_date;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $product_discount;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address_delivery;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -197,5 +208,36 @@ class Order
         $this->dispatch_date = $dispatch_date;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getProductDiscount()
+    {
+        return $this->product_discount;
+    }
+
+    /**
+     * @param mixed $product_discount
+     */
+    public function setProductDiscount($product_discount): void
+    {
+        $this->product_discount = $product_discount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAddressDelivery()
+    {
+        return $this->address_delivery;
+    }
+
+    /**
+     * @param mixed $address_delivery
+     */
+    public function setAddressDelivery($address_delivery): void
+    {
+        $this->address_delivery = $address_delivery;
+    }
     
 }

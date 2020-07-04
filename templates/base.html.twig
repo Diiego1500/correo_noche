@@ -11,24 +11,72 @@
         <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.css') }}">
         <style>
             @import url(//fonts.googleapis.com/css?family=Kaushan+Script:regular|Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic|Ubuntu:300,300italic,regular,italic,500,500italic,700,700italic&subset=latin);
-            h1, h2, h3, h4, h5, h6{
+
+            h1, h2, h3, h4, h5, h6 {
                 font-family: 'Kaushan Script', handwriting;
-                color:#563d7c;
+                color: #563d7c;
             }
-            body{
+
+            body {
                 font-family: 'Ubuntu', sans-serif;
             }
 
         </style>
     {% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
         {% include 'nav_bar/admin_navbar.html.twig' %}
     {% elseif is_granted('ROLE_USER') %}
         {% include 'nav_bar/user_navbar.html.twig' %}
     {% endif %}
+{% endblock %}
+
+
+{% block footer %}
+    <!-- Footer -->
+    <footer class="page-footer font-small blue pt-3 mt-auto" style="background-color: #563d7c; color: white">
+        <div class="footer-copyright text-center py-2">© 2020 Copyright:
+            <a href="#" style="color: white"> <u>Elcorreodelanoche.com</u></a> Todos los derechos Reservados.
+        </div>
+        <div class="footer-copyright text-center pb-2">
+            <a data-toggle="modal" data-target="#exampleModalLong" style="cursor:pointer;">
+                <u>Sobre el desarrollador</u>
+            </a>
+        </div>
+    </footer>
+    <!-- Footer -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">El Desarrollador.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img class="rounded-circle" src="{{ asset('assets/images/Diego_Bastidas.jpg') }}" alt="Diego Bastidas" width="25%">
+                    <div class="my-2">
+                        <h5>Diego Fernando Bastidas Rincón</h5>
+                        <div><small><strong>Desarrollador y Diseñador</strong></small></div>
+                        <div><small>diegofernando150@gmail.com</small></div>
+                        <div><small>3045711812</small></div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>

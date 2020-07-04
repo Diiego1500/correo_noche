@@ -17,7 +17,7 @@
                     {% if order is not null %}
                         {% for order in order.productOrders %}
                             {% set product = order.product %}
-                            {% set subtotal = (order.cantidad * product.price) %}
+                            {% set subtotal = (order.cantidad * product.price)  - (((product.price * order.cantidad) * product.discount) / 100 )%}
                             <div class="col-md-3 p-3 my-2 border bg-white">
                                 <img class="rounded" src="{{ asset('uploads/product/'~product.photo) }}"
                                      alt="{{ product.name }}" width="100%">

@@ -14,12 +14,26 @@
             <div class="col-md-8">
                 <div class="row">
                     {% for product in products %}
-                        <div class="col-md-6 d-flex bd-highlight my-1 rounded-sm my-4 ">
+                        <div class="col-md-4 d-flex bd-highlight my-1 rounded-sm my-4 ">
                             <div class="category p-2 bd-highlight bg-white border">
                                 <img class="rounded" src="{{ asset('uploads/product/'~product.photo) }}" alt="{{ product.name }}"
                                      width="100%">
                                 <hr>
                                 <h5>{{ product.name }}</h5>
+                                {% if product.discount > 0 %}
+                                    <div style="color: green">
+                                        <small><i class="fas fa-star"></i>
+                                            <strong>{{ product.discount }}% de descuento</strong>
+                                        </small>
+                                    </div>
+                                {% else %}
+                                    <div style="color: blueviolet">
+                                        <small>
+                                            <i class="fas fa-info"></i> -
+                                            <strong>Producto sin descuento</strong>
+                                        </small>
+                                    </div>
+                                {% endif %}
                                 <small>precio: ${{ product.price }}</small>
                                 <hr>
                                 <button class="btn btn-success btn-block add_car" data-id="{{ product.id }}"
@@ -37,7 +51,7 @@
             <div class="col-md-4">
                 <div class="border my-2">
                     <div class="p-2 rounded-top" style="background-color: #563d7c; color: white">
-                        <strong>Carrito de compras</strong> - <a href="{{ path('shopping_car') }}"><small>Confirmar Pedido</small></a>
+                        <strong><i class="fas fa-shopping-cart"></i> Carrito de compras</strong> - <a href="{{ path('shopping_car') }}" style="color: whitesmoke"><small><i><u>Confirmar Pedido</u></i></small></a>
                     </div>
                     <div id="shopping_car"  class="bg-white" style="width: 100%; height: 250px; overflow-y: scroll; overflow-x: hidden;">
                         {% if order is not null %}
@@ -46,12 +60,24 @@
                                 <div class="p-2">
                                     <div class="p-1 rounded border">
                                         <h5>{{ product.name }}</h5>
+                                        {% if product.discount > 0 %}
+                                            <div style="color: green">
+                                                <small>
+                                                    <i class="fas fa-star"></i>
+                                                    <strong>{{ product.discount }}% de descuento</strong>
+                                                </small>
+                                            </div>
+                                        {% endif %}
                                         <div><small>Precio Unidad: ${{ product.price }}</small></div>
                                         <div class="row">
                                             <div class="col-md-6"><small>Cantidad: {{ productorder.cantidad }}</small>
                                             </div>
                                             <div class="col-md-6 text-right">
-                                                <small><strong>SubTotal: {{ product.price * productorder.cantidad }}</strong></small>
+                                                <small>
+                                                    <strong>
+                                                        SubTotal: {{ (product.price * productorder.cantidad) - (((product.price * productorder.cantidad) * product.discount) / 100)  }}
+                                                    </strong>
+                                                </small>
                                             </div>
                                         </div>
                                     </div>

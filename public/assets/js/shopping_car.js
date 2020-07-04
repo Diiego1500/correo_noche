@@ -19,7 +19,7 @@ $('.add_car').click(function () {
                     dataType: "json",
                     success: function (data) {
                         $('#not_added').hide();
-                        var product_order = addProduct(data['product_name'], data['product_price'], data['product_ammount']);
+                        var product_order = addProduct(data['product_name'], data['product_price'], data['product_ammount'], data['product_discount']);
                         $('#shopping_car').append(product_order);
                         Swal.fire(
                             '¡Agregado Exitosamente!',
@@ -34,15 +34,34 @@ $('.add_car').click(function () {
     });
 });
 
-function addProduct(product_name, product_price, product_ammount) {
-    var product_order =
-        "<div class='p-2'>" +
-        "<div class='p-1 rounded border'><h5>" + product_name + "</h5>" +
-        "<div><small>Precio Unidad: $" + product_price + "</small></div>" +
-        "<div class='row'>" +
-        "<div class='col-md-6'><small>Cantidad: " + product_ammount + "</small></div>" +
-        "<div class='col-md-6 text-right'><small><strong>SubTotal " + (product_price * product_ammount) + "</strong></small></div>" +
-        "</div>" +
-        "</div>";
+function addProduct(product_name, product_price, product_ammount, product_discount) {
+    if(product_discount > 0 ){
+        var product_order =
+            "<div class='p-2'>" +
+            "<div class='p-1 rounded border'><h5>" + product_name + "</h5>" +
+            "<div style='color: green'><small><i class='fas fa-star'></i><strong>"+product_discount+"% de descuento</strong></small></div>"+
+
+            "<div><small>Precio Unidad: $" + product_price + "</small></div>" +
+            "<div class='row'>" +
+            "<div class='col-md-6'><small>Cantidad: " + product_ammount + "</small></div>" +
+            "<div class='col-md-6 text-right'><small><strong>SubTotal " +
+            ((product_price * product_ammount) - (((product_price * product_ammount) * product_discount) / 100))
+            + "</strong></small></div>" +
+            "</div>" +
+            "</div>";
+    }else{
+        var product_order =
+            "<div class='p-2'>" +
+            "<div class='p-1 rounded border'><h5>" + product_name + "</h5>" +
+            "<div><small>Precio Unidad: $" + product_price + "</small></div>" +
+            "<div class='row'>" +
+            "<div class='col-md-6'><small>Cantidad: " + product_ammount + "</small></div>" +
+            "<div class='col-md-6 text-right'><small><strong>SubTotal " +
+            ((product_price * product_ammount) - (((product_price * product_ammount) * product_discount) / 100))
+            + "</strong></small></div>" +
+            "</div>" +
+            "</div>";
+    }
+
     return product_order;
 };

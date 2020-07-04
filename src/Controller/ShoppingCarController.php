@@ -31,8 +31,11 @@ class ShoppingCarController extends AbstractController
             $total_ammount = 0;
             foreach ($order->getProductOrders() as $productorder){
                 $product = $productorder->getProduct();
-                $subtotal = $product->getPrice() * $productorder->getCantidad();
+                $subtotal = ($product->getPrice() * $productorder->getCantidad())- ((($product->getPrice() * $productorder->getCantidad()) * $product->getDiscount()) / 100);
                 $total_ammount += $subtotal;
+                if($product->getDiscount() > 0){
+                    $order->setProductDiscount(true);
+                }
             }
 
             $order->setPaymentMethod($paymentMethod);
@@ -81,7 +84,8 @@ class ShoppingCarController extends AbstractController
                 [
                     'product_name' => $product->getName(),
                     'product_price' => $product->getPrice(),
-                    'product_ammount'=>$product_order->getCantidad()
+                    'product_ammount'=>$product_order->getCantidad(),
+                    'product_discount'=>$product->getDiscount()
                 ]
             );
         }
@@ -201,8 +205,11 @@ class ShoppingCarController extends AbstractController
                     $total_ammount = 0;
                     foreach ($order->getProductOrders() as $productorder){
                         $product = $productorder->getProduct();
-                        $subtotal = $product->getPrice() * $productorder->getCantidad();
+                        $subtotal = ($product->getPrice() * $productorder->getCantidad())- ((($product->getPrice() * $productorder->getCantidad()) * $product->getDiscount()) / 100);
                         $total_ammount += $subtotal;
+                        if($product->getDiscount() > 0){
+                            $order->setProductDiscount(true);
+                        }
                     }
                     if($total_ammount >= $x_amount){
                         $order->setPaymentMethod('Pago en Linea Con Epayco');
